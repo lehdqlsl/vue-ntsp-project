@@ -58,6 +58,16 @@ const tranEventType = (eventType) => {
   return event
 }
 
+const failureType = (failure) =>{
+  let ret = ""
+  if(failure == "Unplug"){
+    ret = "전원 차단"
+  }else if(failure == "Non_Receive"){
+    ret = "데이터 미수신"
+  }
+  return ret
+}
+
 const noActTime = (time) =>{
   let eventTime = moment(time)
   let now = moment()
@@ -88,6 +98,7 @@ const noActTime = (time) =>{
 export  default {
   tranEventType,
   noActTime,
+  failureType,
   define
 }
 

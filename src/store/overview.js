@@ -55,11 +55,12 @@ const mutations = {
       }
 
       let data = {
+        장애번호: failure[i].failureId,
         시각: failure[i].regDate,
         번호: failure[i].phone,
         장애: gatewayFailureStatus,
         경과시간: failure[i].elapsed_time,
-        인지: failure[i].aware==true?"예":"아니오",
+        /*인지: failure[i].aware==true?"예":"아니오",*/
         처리: failure[i].closed==true?"처리":"미처리",
         _cellVariants: { 장애: level}
       }

@@ -7,12 +7,14 @@ import OverView from './overview'
 import Emergency from './emergency'
 import RecipientList from "../components/UserDetail/RecipientList";
 import userdetail from "./userdetail";
+import failure from "@/store/failure";
 Vue.use(Vuex);
 
 export const store = new Vuex.Store({
   modules: {
     overview: OverView,
     emergency: Emergency,
-    recipient: userdetail
+    recipient: userdetail,
+    failure: failure
   }
 });

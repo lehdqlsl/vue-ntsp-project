@@ -4,28 +4,28 @@
         <div class="row">
           <div class="col-xl-6">
             <card>
-              <h4 class="card-title" style="margin-bottom: 10px;">장애 세부 내용</h4>
+              <h5 class="card-title mb-3">장애 세부 내용</h5>
               <div class="row">
                 <b-table-simple hover small responsive style="text-align: left;">
                   <b-tr>
-                    <b-th class="pl-3 pt-3" style="width: 200px;"><p>게이트웨이 번호</p></b-th>
-                    <b-td class="pl-3 pt-3"><p>010-6123-2525</p></b-td>
+                    <b-th class="pl-3 pt-3"><p>장애 번호</p></b-th>
+                    <b-td class="pl-3 pt-3"><p>{{ failure.failureId }}</p></b-td>
                   </b-tr>
                   <b-tr>
-                    <b-th class="pl-3 pt-3"><p>장애 번호</p></b-th>
-                    <b-td class="pl-3 pt-3"><p>18391</p></b-td>
+                    <b-th class="pl-3 pt-3" style="width: 200px;"><p>게이트웨이 번호</p></b-th>
+                    <b-td class="pl-3 pt-3"><p>{{ failure.phone }}</p></b-td>
                   </b-tr>
                   <b-tr>
                     <b-th class="pl-3 pt-3"><p>종류</p></b-th>
-                    <b-td class="pl-3 pt-3"><p>데이터 미수신</p></b-td>
+                    <b-td class="pl-3 pt-3"><p>{{ failure.gatewayFailureStatus }}</p></b-td>
                   </b-tr>
                   <b-tr>
                     <b-th class="pl-3 pt-3"><p>발생시각</p></b-th>
-                    <b-td class="pl-3 pt-3"><p><a href="#">2020/09/16 17:20:95</a></p></b-td>
+                    <b-td class="pl-3 pt-3"><p><a href="#">{{ failure.regDate }}</a></p></b-td>
                   </b-tr>
                   <b-tr>
                     <b-th class="pl-3 pt-3"><p>상태</p></b-th>
-                    <b-td class="pl-3 pt-3"><p>해결됨</p></b-td>
+                    <b-td class="pl-3 pt-3"><p>{{ failure.closed }}</p></b-td>
                   </b-tr>
                   <b-tr>
                     <b-th class="pl-3 pt-3"><p>처리자</p></b-th>
@@ -43,19 +43,53 @@
             <card class="flex-fill">
               <h5 class="card-title mb-3">처리 이력</h5>
               <l-table class="table-hover table-sm"
-                       :columns="table2.columns"
-                       :data="table2.data">
+                       :data="actionList">
               </l-table>
             </card>
           </div>
           <div class="col-xl-6">
+            <card>
+              <h5 class="card-title mb-3">장애 갱신</h5>
+              <div>
+                <div class="row mb-3">
+                  <div class="col-lg-4" style="text-align: right">
+                    <label>메시지</label>
+                  </div>
+                  <div class="col-lg-8">
+                    <b-form-textarea
+                      v-model="formData.contents"
+                      no-resize
+                      rows="6"
+                      style="width: 100%"></b-form-textarea>
+                  </div>
+                </div>
+                <div class="row mb-3">
+                </div>
+                <div class="row mb-3">
+                  <div class="col-lg-4" style="text-align: right">
+                    <label>처리 완료</label>
+                  </div>
+                  <div class="col-lg-8">
+                    <b-form-checkbox
+                      v-model="formData.isClosed"
+                    ></b-form-checkbox>
+                  </div>
+                </div>
+                <div class="row mb-3">
+                  <div class="col-lg-4">
+                  </div>
+                  <div class="col-lg-8">
+                    <b-button @click="putData" squared variant="primary" class="mr-3" size="sm">갱신</b-button>
+                  </div>
+                </div>
+              </div>
+            </card>
           </div>
           <div class="col-xl-6">
             <card>
               <h5 class="card-title mb-3">최근 발생 장애 목록</h5>
               <l-table class="table-hover table-sm"
-                       :columns="table1.columns"
-                       :data="table1.data">
+                       :data="failureList">
               </l-table>
             </card>
           </div>
@@ -65,6 +99,9 @@
 </template>
 <script>
   import LTable from 'src/components/Table.vue'
+  import {createNamespacedHelpers} from "vuex";
+
+  const failureHelper = createNamespacedHelpers('failure')
 
   const tableColumns = ['장애', '발생시각', '처리시각', '처리자', '인지', '상태']
   const tableData = [{
@@ -106,8 +143,44 @@
     components: {
       LTable
     },
+    props: {
+      id: {
+        type: Number,
+        default: 0
+      }
+    },
+    computed: {
+      ...failureHelper.mapState({
+        failure: state => state.failure,
+        actionList: state => state.actionList,
+        failureList: state => state.failureList
+      })
+    },
+    methods: {
+      ...failureHelper.mapActions([
+        'getFailure',
+        'postFailureAction',
+        'getFailureAction',
+        'getFailureList'
+      ]),
+      putData (){
+        this.formData.failureId = this.failure.failureId
+        this.postFailureAction(this.formData);
+        this.$router.go(0)
+      }
+    },
+    mounted() {
+      console.log(this.id)
+      this.getFailure(this.id)
+      this.getFailureAction(this.id)
+      this.getFailureList(this.id)
+    },
     data() {
       return {
+        formData: {
+          contents: '',
+          isClosed: ''
+        },
         table1: {
           columns: [...tableColumns],
           data: [...tableData]

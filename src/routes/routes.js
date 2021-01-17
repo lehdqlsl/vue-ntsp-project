@@ -75,6 +75,7 @@ const routes = [
       {
         path: 'device-detail',
         name: 'DeviceDetail',
+        props: true,
         component: () => import('src/pages/DeviceDetail.vue')
       },
       {
