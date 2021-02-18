@@ -44,9 +44,8 @@ export default {
           borderColor : 'rgba(255, 0, 0, 0.20)',
           backgroundColor : 'rgba(255, 0, 0, 0.20)',
           label:"화재",
-          fill:false
         },
-        {
+       {
           data: this.outData,
           borderColor : 'rgba(50, 255, 50, 0.20)',
           backgroundColor : 'rgba(50, 255, 50, 0.20)',
@@ -80,18 +79,19 @@ export default {
       },
       scales:{
         xAxes:[{
+          offset: true,
           type:'time',
           time:{
-            unit:'day'
+            unit: 'day',
           },
           ticks:{
-            fontSize:14
+            fontSize:14,
           }
         }],
         yAxes:[{
           ticks:{
             suggestedMin: 0
-          }
+          },
         }]
       },
       tooltips: {

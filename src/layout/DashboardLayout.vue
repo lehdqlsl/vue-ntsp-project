@@ -10,30 +10,22 @@
         <i class="nc-icon nc-ambulance"></i>
         <p>응급 대시보드</p>
       </sidebar-link>
-      <sidebar-link to="/admin/user">
-        <i class="nc-icon nc-circle-09"></i>
-        <p>대상자 대시보드</p>
-      </sidebar-link>
-      <sidebar-link to="/admin/test">
-        <i class="nc-icon nc-bullet-list-67"></i>
-        <p>장애갱신</p>
-      </sidebar-link>
-      <sidebar-link to="/admin/device-detail">
-        <i class="nc-icon nc-bullet-list-67"></i>
-        <p>장애 세부내용</p>
-      </sidebar-link>
-      <sidebar-link to="/admin/event-renew">
-        <i class="nc-icon nc-bullet-list-67"></i>
-        <p>이벤트갱신</p>
-      </sidebar-link>
-      <sidebar-link to="/admin/test2">
-        <i class="nc-icon nc-bullet-list-67"></i>
-        <p>이벤트 세부내용</p>
-      </sidebar-link>
       <sidebar-link to="/admin/recipient-list">
         <i class="nc-icon nc-bullet-list-67"></i>
-        <p>장비 목록</p>
+        <p>게이트웨이 관리</p>
       </sidebar-link>
+      <sidebar-link to="/admin/sensor-list">
+        <i class="nc-icon nc-bullet-list-67"></i>
+        <p>센서 관리</p>
+      </sidebar-link>
+      <sidebar-link to="/admin/notice-list">
+        <i class="nc-icon nc-notes"></i>
+        <p>공지사항</p>
+      </sidebar-link>
+<!--      <sidebar-link to="/admin/remote-manager">
+        <i class="nc-icon nc-bullet-list-67"></i>
+        <p>원격 관리</p>
+      </sidebar-link>-->
       <hr>
 
     </side-bar>

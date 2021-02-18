@@ -7,7 +7,7 @@
             <div slot="header" class="icon-warning">
             </div>
             <div slot="content">
-              <h1 class="stat-title">{{ posts.Normal }}</h1>
+              <h1 class="stat-title" @click="gatewayList('Normal')" style="cursor: pointer;">{{ posts.Normal }}</h1>
             </div>
             <div slot="footer">
               정상
@@ -16,16 +16,17 @@
         </div>
 
         <div class="col-xl-3 col-md-6">
-            <stats-card2 class="red">
-              <div slot="header" class="icon-danger">
-              </div>
-              <div slot="content">
-                <h1 class="stat-title">{{ posts.Non_Receive }}</h1>
-              </div>
-              <div slot="footer">
-                미수신
-              </div>
-            </stats-card2>
+          <stats-card2 class="red">
+            <div slot="header" class="icon-danger">
+            </div>
+            <div slot="content">
+              <h1 class="stat-title" @click="gatewayList('Non_Receive')" style="cursor: pointer;">{{ posts.Non_Receive
+                }}</h1>
+            </div>
+            <div slot="footer">
+              미수신
+            </div>
+          </stats-card2>
         </div>
 
         <div class="col-xl-3 col-md-6">
@@ -34,7 +35,7 @@
               <i class="nc-icon nc-vector text-danger"></i>
             </div>
             <div slot="content">
-              <h1 class="stat-title">{{ posts.Unplug }}</h1>
+              <h1 class="stat-title" @click="gatewayList('Unplug')" style="cursor: pointer;">{{ posts.Unplug }}</h1>
             </div>
             <div slot="footer">
               차단
@@ -48,7 +49,7 @@
               <i class="nc-icon nc-favourite-28 text-primary"></i>
             </div>
             <div slot="content">
-              <h1 class="stat-title">{{ posts.AS }}</h1>
+              <h1 class="stat-title" @click="gatewayList('AS')" style="cursor: pointer;">{{ posts.AS }}</h1>
             </div>
             <div slot="footer">
               점검
@@ -64,7 +65,7 @@
                 body-classes="table-full-width table-responsive"
           >
             <template slot="header">
-              <h5 class="card-title" >장애</h5>
+              <h5 class="card-title">장애</h5>
             </template>
             <l-table class="table-hover table-sm"
                      :data="failure">
@@ -76,72 +77,73 @@
                 body-classes="table-full-width table-responsive"
           >
             <template slot="header">
-              <h5 class="card-title" >점검</h5>
+              <h5 class="card-title">생활관리사 방문</h5>
             </template>
-
+            <visit-table class="table-hover table-sm"
+                     :data="qrcheck">
+            </visit-table>
           </card>
         </div>
       </div>
 
       <div class="row">
         <div class="col-xl-3 col-md-6">
-          <chart-card2 :chart-data="doughnut.data">
+          <chart-card2 v-if="isFetching" :chart-data="actCount">
             <template slot="header">
               <span class="card-title">활동감지기</span>
               <p class="card-category">24 Hours performance</p>
-            </template>
+            </template>e
             <template slot="footer">
               <hr style="padding: 0;">
-                  <l-table class="table-hover table-sm"
-                           style="width: 100%"
-                           :data="actFailureList">
-                  </l-table>
+              <l-table class="table-hover table-sm"
+                       style="width: 100%"
+                       :data="this.actFailureList">
+              </l-table>
             </template>
           </chart-card2>
         </div>
         <div class="col-xl-3 col-md-6">
-          <chart-card2 :chart-data="doughnut.data">
+          <chart-card2 v-if="isFetching" :chart-data="this.fireCount">
             <template slot="header">
               <span class="card-title">화재감지기</span>
               <p class="card-category">24 Hours performance</p>
             </template>
             <template slot="footer">
               <hr>
-                <l-table class="table-hover table-sm"
-                         style="width: 100%"
-                         :data="fireFailureList">
-                </l-table>
-
+              <l-table class="table-hover table-sm"
+                       style="width: 100%"
+                       :data="this.fireFailureList">
+              </l-table>
             </template>
           </chart-card2>
         </div>
         <div class="col-xl-3 col-md-6">
-          <chart-card2 :chart-data="doughnut.data">
+          <chart-card2 v-if="isFetching" :chart-data="this.doorCount">
             <template slot="header">
               <span class="card-title">열림감지기</span>
               <p class="card-category">24 Hours performance</p>
             </template>
             <template slot="footer">
               <hr>
-                <l-table class="table-hover table-sm"
-                         style="width: 100%"
-                         :data="doorFailureList">
-                </l-table>
+              <l-table class="table-hover table-sm"
+                       style="width: 100%"
+                       :data="this.doorFailureList">
+              </l-table>
             </template>
           </chart-card2>
         </div>
         <div class="col-xl-3 col-md-6">
-          <chart-card2 :chart-data="doughnut.data">
+          <chart-card2 v-if="isFetching" :chart-data="this.emerCount">
             <template slot="header">
               <span class="card-title">응급호출기</span>
               <p class="card-category">24 Hours performance</p>
             </template>
             <template slot="footer">
               <hr>
-                <l-table class="table-hover table-sm"
-                         style="width: 100%"
-                         :data="emerFailureList">
-                </l-table>
+              <l-table class="table-hover table-sm"
+                       style="width: 100%"
+                       :data="this.emerFailureList">
+              </l-table>
             </template>
           </chart-card2>
         </div>
@@ -154,9 +156,12 @@
   import ChartCard2 from 'src/components/Cards/ChartCard2.vue'
   import StatsCard from 'src/components/Cards/StatsCard.vue'
   import LTable from 'src/components/Table.vue'
+  import VisitTable from 'src/components/VisitTable.vue'
   import StatsCard2 from "../components/Cards/StatsCard2";
   import chart from "../components/chart/CommitChart";
-  import { createNamespacedHelpers } from 'vuex'
+  import {createNamespacedHelpers} from 'vuex'
+  import moment from "moment";
+
   const overviewHelper = createNamespacedHelpers('overview')
 
   export default {
@@ -165,15 +170,13 @@
       LTable,
       ChartCard,
       StatsCard,
-      ChartCard2
+      ChartCard2,
+      VisitTable
     },
-    data () {
+    data() {
       return {
         editTooltip: 'Edit Task',
         deleteTooltip: 'Remove',
-        doughnut: {
-          data:[100,10,5,2]
-        }
       }
     },
     computed: {
@@ -183,50 +186,109 @@
         actFailureList: state => state.actFailureList,
         fireFailureList: state => state.fireFailureList,
         doorFailureList: state => state.doorFailureList,
-        emerFailureList: state => state.emerFailureList
+        emerFailureList: state => state.emerFailureList,
+        actCount: state => state.actCount,
+        fireCount: state => state.fireCount,
+        doorCount: state => state.doorCount,
+        emerCount: state => state.emerCount,
+        isFetching: state => state.isFetching,
+        qrcheck: state => state.qrcheck
       }),
     },
     methods: {
       ...overviewHelper.mapActions([
         'getPosts',
         'getFailure',
-        'getSensorFailure'
+        'getSensorFailure',
+        'getSensorCount',
+        'getQRCheck'
       ]),
+      gatewayList(type) {
+        this.$router.push(
+          {
+            name: 'RecipientList',
+            params: {
+              "propsData": type
+            }
+          }
+        )
+      }
     },
-    mounted() {
+    created() {
+      this.getSensorCount()
       this.getPosts()
       this.getFailure()
       this.getSensorFailure()
-    }
+      this.getQRCheck()
+    },
+    mounted() {
+      this.counterInterval = setInterval(() => {
+        this.getPosts()
+        this.getFailure()
+        this.getSensorFailure()
+        this.getQRCheck()
+      }, 5000)
+      this.alertInterval = setInterval(() => {
+        for(let i=0;i<this.failure.length;i++){
+          let eventTime = moment(this.failure[i].발생시각)
+          let now = moment()
+          let diff = now.diff(eventTime,"minutes")
+
+          if(diff <= 3){
+            let el = document.querySelectorAll('.table-warning','.table-danger')
+            for(let j=0;j<el.length;j++){
+              if(!el[j].classList.contains('flash')){
+                el[j].classList.add('flash')
+              }else{
+                el[j].classList.remove('flash')
+              }
+            }
+          }
+        }
+      }, 1000)
+    },
+    beforeDestroy() {
+      clearInterval( this.counterInterval )
+      clearInterval( this.alertInterval )
+    },
   }
 </script>
 <style>
-  .red{
+  .red {
     background-color: #f44336;
   }
-  .green{
+
+  .green {
     background-color: #4caf50;
   }
-  .orange{
+
+  .orange {
     background-color: #ff9800;
   }
-  .gray{
+
+  .gray {
     background-color: #9A9A9A;
   }
-  #doughnut-chart{
+
+  #doughnut-chart {
     height: 200px;
   }
 
-  hr{
+  hr {
     margin-top: 0px !important;
     margin-bottom: 0px !important;
     border-top: 1.5px solid #00000047;
   }
 
-  .table-danger{
+  .table-danger {
     cursor: pointer;
   }
-  .table-warning{
+
+  .table-warning {
     cursor: pointer;
+  }
+
+  .flash{
+    background-color: transparent;
   }
 </style>

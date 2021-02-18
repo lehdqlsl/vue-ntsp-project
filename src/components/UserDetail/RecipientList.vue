@@ -65,7 +65,6 @@
               type: 'primary'
             },
             handler: row => {
-              console.log(this.select)
               this.$emit('selectEvent',this.select)
               this.$message('Edit clicked')
               row.flow_no = 'hello word' + Math.random()

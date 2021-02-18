@@ -13,6 +13,7 @@
               range-separator="~"
               start-placeholder="시작 날짜"
               end-placeholder="종료 날짜"
+              value-format="yyyy-MM-dd"
               :picker-options="pickerOptions">
             </el-date-picker>
           </el-col>
@@ -22,6 +23,7 @@
         </el-row>
       </div>
       <el-table
+        v-loading="cycleLoading"
         v-on:handleScroll
         :data="period"
         :max-height="385"
@@ -67,11 +69,15 @@
 <script>
   import moment from "moment";
   import {createNamespacedHelpers} from "vuex";
+  import axios from 'axios'
+  import common from 'src/store/common'
+
   const recipientHelper = createNamespacedHelpers('recipient')
 
   export default {
     name: "PeriodReport",
     components: {},
+    props: ["phone"],
     data() {
       return {
         textarea: "",
@@ -119,57 +125,85 @@
               picker.$emit('pick', [start, end]);
             }
           }]
-        },
-        selectedRow: []
+        }
       }
     },
     methods: {
-      searchPeriod(){
-        this.getPeriodList(this.phone)
+      syntaxHighlight(json) {
+        if (typeof json != 'string') {
+          json = JSON.stringify(json, undefined, 2);
+        }
+        json = json.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+        return json.replace(/("(\\u[a-zA-Z0-9]{4}|\\[^u]|[^\\"])*"(\s*:)?|\b(true|false|null)\b|-?\d+(?:\.\d*)?(?:[eE][+\-]?\d+)?)/g, function (match) {
+          var cls = 'number';
+          if (/^"/.test(match)) {
+            if (/:$/.test(match)) {
+              cls = 'key';
+            } else {
+              cls = 'string';
+            }
+          } else if (/true|false/.test(match)) {
+            cls = 'boolean';
+          } else if (/null/.test(match)) {
+            cls = 'null';
+          }
+          return '<span class="' + cls + '">' + match + '</span>';
+        });
       },
-      onCreate() {
-        this.data.push({
-          content: "new created",
-          flow_no: "FW201601010003" + Math.floor(Math.random() * 100),
-          flow_type: "Help",
-          flow_type_code: "help"
+      searchPeriod() {
+        let params = {
+          phone: this.$route.params.id,
+          startDate: this.value2[0],
+          endDate: this.value2[1],
+        }
+        this.getPeriodList(params)
+      },
+      handleCurrentChange(val) {
+        axios.get(common.define.DEST + '/sensors/cycles/' + val.id).then((Response) => {
+          if (val != null) {
+            let json = {
+              gateway: val,
+              sensors: Response.data
+            }
+            this.textarea = JSON.stringify(json, null, '\t')
+          }
         })
-      },
-      onCreate100() {
-        [...new Array(100)].map(_ => {
-          this.onCreate()
-        })
-      },
-      handleSelectionChange(val) {
-        this.selectedRow = val
-      },
-      bulkDelete() {
-        this.selectedRow.map(row => {
-          this.data.splice(this.data.indexOf(row), 1)
-        })
-        this.$message('bulk delete success')
-      },
-      handleCurrentChange(val){
-        this.textarea = val.data
       },
       ...recipientHelper.mapActions([
-        'getPeriodList'
+        'getPeriodList',
+        'getSensorPeriod'
       ]),
     },
     created() {
-      this.value2=[
-        moment().subtract(7,'days').format("YYYY-MM-DD"),
+      this.value2 = [
+        moment().subtract(7, 'days').format("YYYY-MM-DD"),
         moment().format("YYYY-MM-DD")
       ]
     },
     mounted() {
-      this.getPeriodList(this.phone)
+      let params = {
+        phone: this.$route.params.id,
+        startDate: this.value2[0],
+        endDate: this.value2[1],
+      }
+      this.getPeriodList(params)
     },
     computed: {
       ...recipientHelper.mapState({
         period: state => state.period,
-        phone: state => state.phone
+        cycleLoading: state => state.cycleLoading,
+        sensorCycle: state => state.sensorCycle
       }),
+    },
+    watch: {
+      phone: function (newVal, oldVal) {
+        let params = {
+          phone: newVal,
+          startDate: this.value2[0],
+          endDate: this.value2[1],
+        }
+        this.getPeriodList(params)
+      }
     }
   }
 </script>

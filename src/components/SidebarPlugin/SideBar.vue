@@ -43,7 +43,7 @@
     props: {
       title: {
         type: String,
-        default: 'Admin'
+        default: 'TeleField'
       },
       backgroundColor: {
         type: String,

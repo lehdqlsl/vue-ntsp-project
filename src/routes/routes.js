@@ -7,7 +7,6 @@ import UserProfile from 'src/pages/UserProfile.vue'
 import TableList from 'src/pages/TableList.vue'
 import Typography from 'src/pages/Typography.vue'
 import Icons from 'src/pages/Icons.vue'
-import Maps from 'src/pages/Maps.vue'
 import Notifications from 'src/pages/Notifications.vue'
 import Upgrade from 'src/pages/Upgrade.vue'
 
@@ -53,11 +52,6 @@ const routes = [
         component: Icons
       },
       {
-        path: 'maps',
-        name: 'Maps',
-        component: Maps
-      },
-      {
         path: 'notifications',
         name: 'Notifications',
         component: Notifications
@@ -68,12 +62,12 @@ const routes = [
         component: () => import('src/pages/Test.vue')
       },
       {
-        path: 'test2',
+        path: 'test2/:id',
         name: 'Test2',
         component: () => import('src/pages/Test2.vue')
       },
       {
-        path: 'device-detail',
+        path: 'device-detail/:id',
         name: 'DeviceDetail',
         props: true,
         component: () => import('src/pages/DeviceDetail.vue')
@@ -87,7 +81,32 @@ const routes = [
         path: 'recipient-list',
         name: 'RecipientList',
         props: true,
-        component: () => import('src/pages/UserDetail')
+        component: () => import('src/pages/RecipientList'),
+        children: [{
+          path: 'user-info/:id',
+          name: 'UserInfo',
+          component: () => import('src/components/UserDetail/UserInfo')
+        }]
+      },
+      {
+        path: 'user-info/:id',
+        name: 'UserInfoOne',
+        component: () => import('src/components/UserDetail/UserInfo'),
+      },
+      {
+        path: 'sensor-list',
+        name: 'SensorList',
+        component: () => import('src/pages/SensorList')
+      },
+      {
+        path: 'notice-list',
+        name: 'NoticeList',
+        component: () => import('src/pages/NoticeList')
+      },
+      {
+        path: 'remote-manager',
+        name: 'RemoteManager',
+        component: () => import('src/pages/RemoteManager')
       },
       {
         path: 'upgrade',
@@ -96,14 +115,14 @@ const routes = [
       }
     ]
   },
-  { path: '*', component: NotFound }
+  {path: '*', component: NotFound}
 ]
 
 /**
  * Asynchronously load view (Webpack Lazy loading compatible)
  * The specified component must be inside the Views folder
  * @param  {string} name  the filename (basename) of the view to load.
-function view(name) {
+ function view(name) {
    var res= require('../components/Dashboard/Views/' + name + '.vue');
    return res;
 };**/

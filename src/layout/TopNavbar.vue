@@ -33,35 +33,9 @@
                       <a class="dropdown-item" href="#">Another notification</a>
                     </base-dropdown>-->
 
-          <li class="nav-item">
-            <b-form-select
-              v-model="selected"
-              v-on:change="change">
-              <b-form-select-option value="0">뒷번호(4자리)</b-form-select-option>
-              <b-form-select-option value="1">전체번호(11자리)</b-form-select-option>
-              <b-form-select-option value="2">이름</b-form-select-option>
-            </b-form-select>
-          </li>
-          <li class="nav-item">
-            <b-form-input
-              :placeholder="placeholder"
-              class="col-lg-12"
-              id="inputText"
-              v-on:input="inputMethod"
-              v-model="inputData"
-              :maxlength="max"
-            >
-            </b-form-input>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" @click="btnSearch" style="cursor: pointer">
-              <i class="nc-icon nc-zoom-split"></i>
-              <span class="d-lg-block">&nbsp;검색</span>
-            </a>
-          </li>
         </ul>
         <ul class="navbar-nav ml-auto">
-          <li class="nav-item">
+<!--          <li class="nav-item">
             <a class="nav-link" href="#">
               관리
             </a>
@@ -74,7 +48,7 @@
             <a class="dropdown-item" href="#">Something</a>
             <div class="divider"></div>
             <a class="dropdown-item" href="#">Separated link</a>
-          </base-dropdown>
+          </base-dropdown>-->
           <li class="nav-item">
             <a href="#" class="nav-link">
               Logout
