@@ -55,7 +55,7 @@ const actions = {
 const mutations = {
   GET_QRCHECK(state, list) {
     state.qrcheck = []
-    console.log(list)
+
     for (let i = 0; i < list.length; i++) {
       let data = {
         방문번호: list[i].id,

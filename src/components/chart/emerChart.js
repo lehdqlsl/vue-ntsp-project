@@ -42,27 +42,27 @@ export default {
         {
           data: this.chartData,
           borderColor : 'rgba(255, 0, 0, 0.20)',
-          backgroundColor : 'rgba(255, 0, 0, 0.20)',
+          backgroundColor : 'rgba(255, 0, 0, 0.50)',
           label:"화재",
         },
        {
           data: this.outData,
           borderColor : 'rgba(50, 255, 50, 0.20)',
-          backgroundColor : 'rgba(50, 255, 50, 0.20)',
+          backgroundColor : 'rgba(50, 255, 50, 0.50)',
           label:"응급호출",
           fill:false
         },
         {
           data: this.inactiveData,
           borderColor : 'rgba(0, 0, 255, 0.20)',
-          backgroundColor : 'rgba(0, 0, 255, 0.20)',
+          backgroundColor : 'rgba(0, 0, 255, 0.50)',
           label:"119",
           fill:false
         },
         {
           data: this.sleepData,
           borderColor : 'rgba(100, 175, 255, 0.20)',
-          backgroundColor : 'rgba(100, 175, 255, 0.20)',
+          backgroundColor : 'rgba(100, 175, 255, 0.50)',
           label:"활동미감지",
           fill:false
         }

@@ -10,30 +10,6 @@ export default {
           data: []
         }
       }
-    },
-    outData:{
-      type: Array,
-      default: () => {
-        return {
-          data: []
-        }
-      }
-    },
-    inactiveData:{
-      type: Array,
-      default: () => {
-        return {
-          data: []
-        }
-      }
-    },
-    sleepData:{
-      type: Array,
-      default: () => {
-        return {
-          data: []
-        }
-      }
     }
   },
   mounted () {
@@ -43,28 +19,7 @@ export default {
           data: this.chartData,
           borderColor : 'rgba(255, 0, 0, 0.20)',
           backgroundColor : 'rgba(255, 0, 0, 0.20)',
-          label:"활동",
-          fill:false
-        },
-        {
-          data: this.outData,
-          borderColor : 'rgba(50, 255, 50, 0.20)',
-          backgroundColor : 'rgba(50, 255, 50, 0.20)',
-          label:"외출",
-          fill:false
-        },
-        {
-          data: this.inactiveData,
-          borderColor : 'rgba(0, 0, 255, 0.20)',
-          backgroundColor : 'rgba(0, 0, 255, 0.20)',
-          label:"미감지",
-          fill:false
-        },
-        {
-          data: this.sleepData,
-          borderColor : 'rgba(100, 175, 255, 0.20)',
-          backgroundColor : 'rgba(100, 175, 255, 0.20)',
-          label:"수면",
+          label:"활동량",
           fill:false
         }
       ],
@@ -82,7 +37,7 @@ export default {
         xAxes:[{
           type:'time',
           time:{
-            unit:'day'
+            unit:'hour'
           },
           ticks:{
             fontSize:14
@@ -100,7 +55,7 @@ export default {
         callbacks: {
           label: function (tooltipItem, data) {
             var label = data.datasets[tooltipItem.datasetIndex].label || '';
-            return label + ": "+tooltipItem.value+"시간";
+            return label + ": "+tooltipItem.value+"회";
           }
         }
       }

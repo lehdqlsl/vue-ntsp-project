@@ -80,7 +80,7 @@
               <h5 class="card-title">생활관리사 방문</h5>
             </template>
             <visit-table class="table-hover table-sm"
-                     :data="qrcheck">
+                         :data="qrcheck">
             </visit-table>
           </card>
         </div>
@@ -92,7 +92,8 @@
             <template slot="header">
               <span class="card-title">활동감지기</span>
               <p class="card-category">24 Hours performance</p>
-            </template>e
+            </template>
+            e
             <template slot="footer">
               <hr style="padding: 0;">
               <l-table class="table-hover table-sm"
@@ -164,6 +165,7 @@
 
   const overviewHelper = createNamespacedHelpers('overview')
 
+
   export default {
     components: {
       StatsCard2,
@@ -215,6 +217,9 @@
       }
     },
     created() {
+
+      document.body.style.backgroundColor = '#FFFFFF'
+
       this.getSensorCount()
       this.getPosts()
       this.getFailure()
@@ -229,17 +234,17 @@
         this.getQRCheck()
       }, 5000)
       this.alertInterval = setInterval(() => {
-        for(let i=0;i<this.failure.length;i++){
+        for (let i = 0; i < this.failure.length; i++) {
           let eventTime = moment(this.failure[i].발생시각)
           let now = moment()
-          let diff = now.diff(eventTime,"minutes")
+          let diff = now.diff(eventTime, "minutes")
 
-          if(diff <= 3){
-            let el = document.querySelectorAll('.table-warning','.table-danger')
-            for(let j=0;j<el.length;j++){
-              if(!el[j].classList.contains('flash')){
+          if (diff <= 3) {
+            let el = document.querySelectorAll('.table-warning', '.table-danger')
+            for (let j = 0; j < el.length; j++) {
+              if (!el[j].classList.contains('flash')) {
                 el[j].classList.add('flash')
-              }else{
+              } else {
                 el[j].classList.remove('flash')
               }
             }
@@ -248,8 +253,8 @@
       }, 1000)
     },
     beforeDestroy() {
-      clearInterval( this.counterInterval )
-      clearInterval( this.alertInterval )
+      clearInterval(this.counterInterval)
+      clearInterval(this.alertInterval)
     },
   }
 </script>
@@ -288,7 +293,7 @@
     cursor: pointer;
   }
 
-  .flash{
+  .flash {
     background-color: transparent;
   }
 </style>

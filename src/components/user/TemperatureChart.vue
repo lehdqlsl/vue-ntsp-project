@@ -13,7 +13,7 @@
   <div class="row mt-3">
     <div class="col-lg-12">
         <div class="environment">
-          <TemperatureChart :chart-data="doughnut.data"
+          <TemperatureChart :chart-data="data"
                            :chart-labels="doughnut.labels"
                            :height="250"/>
         </div>
@@ -30,9 +30,7 @@
       components: {
         TemperatureChart
       },
-      props: {
-
-      },
+        props: ["data"],
       data() {
         return {
           value: '',

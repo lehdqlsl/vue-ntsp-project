@@ -124,7 +124,7 @@
     },
     methods: {
       fireLink (){
-        let url = define.DEST+"/file/fire/"+this.emergency.eventId
+        let url = define.DEST+"/open/v1/file/fire/"+this.emergency.eventId
         let popHeight=750;
         let popWidth=1000;
         let winHeight = document.body.clientHeight;	// 현재창의 높이

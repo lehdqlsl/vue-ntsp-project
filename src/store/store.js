@@ -7,6 +7,7 @@ import OverView from './overview'
 import Emergency from './emergency'
 import RecipientList from "../components/UserDetail/RecipientList";
 import userdetail from "./userdetail";
+import auth from "./auth"
 import failure from "@/store/failure";
 Vue.use(Vuex);
 
@@ -15,6 +16,7 @@ export const store = new Vuex.Store({
     overview: OverView,
     emergency: Emergency,
     recipient: userdetail,
-    failure: failure
+    failure: failure,
+    auth: auth
   }
 });

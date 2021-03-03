@@ -50,7 +50,7 @@
             <a class="dropdown-item" href="#">Separated link</a>
           </base-dropdown>-->
           <li class="nav-item">
-            <a href="#" class="nav-link">
+            <a href="/" class="nav-link">
               Logout
             </a>
           </li>

@@ -34,17 +34,18 @@
       </div>
     </div>
 
-    <!--<div slot="footer" class="text-center justify-content-center">
-      <h4 class="d-inline mr-1" style="font-size: 19px;"><b-badge pill variant="success">정상</b-badge></h4>
-      <h4 class="d-inline mr-1" style="font-size: 19px;"><b-badge pill variant="success">외출</b-badge></h4>
-      <h4 class="d-inline mr-1" style="font-size: 19px;"><b-badge pill variant="info" style="background-color: #ffed00;color: #000000">미감지 (주의)</b-badge></h4>
-      <h4 class="d-inline mr-1" style="font-size: 19px;"><b-badge pill variant="warning">미감지 (경고)</b-badge></h4>
-      <h4 class="d-inline mr-1" style="font-size: 19px;"><b-badge pill variant="danger" >미감지 (위험)</b-badge></h4>
-      <h4 class="d-inline mr-1" style="font-size: 19px;"><b-badge pill variant="danger" >화재발생</b-badge></h4>
-      <h4 class="d-inline mr-1" style="font-size: 19px;"><b-badge pill variant="danger" >응급호출</b-badge></h4>
-      <h4 class="d-inline mr-1" style="font-size: 19px;"><b-badge pill variant="danger" >센서불량</b-badge></h4>
-      <h4 class="d-inline mr-1" style="font-size: 19px;"><b-badge pill variant="danger" >게이트웨이불량</b-badge></h4>
-    </div>-->
+    <div slot="footer" class="text-center justify-content-center" style="display: flex">
+
+      <h4 class="d-inline mr-1" style="font-size: 19px;" v-if="recipientInfo.current_status == 7"><b-badge pill variant="warning">활동미감지</b-badge></h4>
+      <h4 class="d-inline mr-1" style="font-size: 19px;" v-if="recipientInfo.current_status == 8"><b-badge pill variant="success">활동중</b-badge></h4>
+      <h4 class="d-inline mr-1" style="font-size: 19px;" v-if="recipientInfo.current_status == 17"><b-badge pill variant="success">외출</b-badge></h4>
+      <h4 class="d-inline mr-1" style="font-size: 19px;" v-if="recipientInfo.current_status == 18"><b-badge pill variant="success">재실</b-badge></h4>
+
+      <h4 class="d-inline mr-1" style="font-size: 19px;" v-if="recipientInfo.gateway_status == 0"><b-badge pill variant="success">G/W 정상</b-badge></h4>
+      <h4 class="d-inline mr-1" style="font-size: 19px;" v-if="recipientInfo.gateway_status == 1"><b-badge pill variant="danger">전원차단</b-badge></h4>
+      <h4 class="d-inline mr-1" style="font-size: 19px;" v-if="recipientInfo.gateway_status == 2"><b-badge pill variant="danger">미수신</b-badge></h4>
+      <h4 class="d-inline mr-1" style="font-size: 19px;" v-if="recipientInfo.gateway_status == 3"><b-badge pill variant="info">점검</b-badge></h4>
+    </div>
 
     <el-dialog
       title="프로필 사진"

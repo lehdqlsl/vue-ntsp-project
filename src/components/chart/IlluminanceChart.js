@@ -52,7 +52,7 @@ export default {
         yAxes:[{
           ticks:{
             suggestedMin: 0,
-            suggestedMax: 1200,
+            suggestedMax: 1000,
           }
         }]
       },

@@ -2,11 +2,8 @@
       <div class="row mt-3">
         <div class="col-lg-12">
           <div class="environment">
-            <LifeChart :chart-data="act.data"
-                       :out-data="out.data"
-                       :inactive-data="inactive.data"
-                       :sleep-data="sleep.data"
-                              :height="350"/>
+            <LifeChart :chart-data="data"
+                              :height="370"/>
           </div>
         </div>
       </div>
@@ -20,9 +17,7 @@
       components: {
         LifeChart
       },
-      props: {
-
-      },
+      props: ["data"],
       data() {
         return {
           value: '',

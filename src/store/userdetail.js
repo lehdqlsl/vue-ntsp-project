@@ -1,6 +1,7 @@
 // import dependency to handle HTTP request to our back end
 import axios from 'axios'
 import common from "./common";
+import auth from "./auth"
 
 //to handle state
 const state = {
@@ -17,7 +18,17 @@ const state = {
   devices: [],
   gateway: '',
   sensorCycle: [],
-  noticeList: []
+  noticeList: [],
+  env: {
+    temperature:[],
+    humidity:[],
+    illuminance:[]
+  },
+  loading:false,
+  statLoading:false,
+  act: [],
+  inact: [],
+  goout: []
 }
 
 //to handle state
@@ -97,7 +108,7 @@ const actions = {
     })
   },
   getRequestLog({commit}, params) {
-    axios.get(common.define.DEST + '/gateways/' + params + '/logs').then((Response) => {
+    axios.get(common.define.DEST + '/open/v1/gateways/' + params + '/logs').then((Response) => {
       commit('GET_LOG_LIST', Response.data)
     })
   },
@@ -116,10 +127,60 @@ const actions = {
       commit('GET_DEVICES', Response.data)
     })
   },
+  getTemp({commit}, parameter) {
+    state.loading=false
+    axios.get(common.define.DEST + '/gateways/'+parameter.phone+'/sensors/4/data', {
+      params: {
+        dateType: parameter.dateType
+      }
+    }).then((Response) => {
+      commit('SET_ENV', Response.data)
+    })
+  },
+  getAct({commit}, parameter){
+    state.statLoading=false
+    axios.get(common.define.DEST + '/gateways/'+parameter.phone+'/sensors/2/data', {
+      params: {
+        dateType: parameter.dateType
+      }
+    }).then((Response) => {
+      commit('SET_ACT', Response.data)
+    })
+  },
+  getStat({commit}, parameter){
+    state.statLoading=false
+    axios.get(common.define.DEST + '/gateways/'+parameter.phone+'/stats/'+parameter.eventType, {
+      params: {
+        dateType: parameter.dateType
+      }
+    }).then((Response) => {
+      if(parameter.eventType == 7){
+        commit('SET_INACT', Response.data)
+      }else if(parameter.eventType == 17){
+        commit('SET_GOOUT', Response.data)
+      }
+    })
+  }
 }
 
 //to handle mutations
 const mutations = {
+  SET_GOOUT(state, act){
+    state.goout = act.inactivity
+    state.statLoading=true
+  },
+  SET_INACT(state, act){
+    state.inact = act.inactivity
+    state.statLoading=true
+  },
+  SET_ACT(state, act){
+    state.act = act.activity
+    state.statLoading=true
+  },
+  SET_ENV(state, env){
+    state.env = env
+    state.loading=true
+  },
   GET_NOTICE_LIST(state, list){
     state.noticeList = list
   },
@@ -146,7 +207,7 @@ const mutations = {
     state.logList = list
   },
   GET_RECIPIENT_DATA(state, data) {
-    data.image = 'http://14.47.229.122:8443/gateways/' + data.phone + '/profile'
+    data.image = 'http://14.47.229.122:8443/open/v1/recipients/' + data.phone + '/profile'
     data.phone = common.FormatNumber(data.phone)
     state.recipientInfo = data
   },
@@ -161,7 +222,6 @@ const mutations = {
     state.phone = phone
   },
   GET_EVENT_LIST(state, list) {
-
     for (let i = 0; i < list.length; i++) {
       let eventType = list[i].eventType
 
@@ -198,17 +258,13 @@ const mutations = {
         } else {
           list[i].type = 'primary'
         }
-        console.log("새로운이벤트:")
-        console.log(list[i])
 
         tmp.push(list[i])
       } else {
         break;
       }
     }
-    console.log("***********")
-    console.log(tmp)
-    console.log("***********")
+
     for (let i = 0; i < tmp.length; i++) {
       state.event.unshift(tmp[i])
     }
