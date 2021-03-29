@@ -100,6 +100,9 @@
         value1: "",
         value2: "",
         pickerOptions: {
+          disabledDate(time) {
+            return time.getTime() > Date.now();
+          },
           shortcuts: [{
             text: '최근 1주일',
             onClick(picker) {

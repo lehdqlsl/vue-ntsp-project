@@ -1,18 +1,24 @@
 <template>
   <card>
-    <h4 class="card-title mb-3">이벤트 목록</h4>
+    <div class="row">
+      <h4 class="card-title mb-3 col-lg-5">이벤트 목록</h4>
+      <div class="col-lg-7 mt-1">
+        <el-tooltip placement="top">
+          <div slot="content">
+            <span>테스트모드가 활성화되면 노드의 색이 <span style="color:#9c9c9e;font-weight: bold;font-size: 13px;">회색</span>으로 변경됩니다.</span>
+          </div>
+          <el-switch
+            @change="toggleTestMode"
+            style="display: block"
+            v-model="isActiveTestMode"
+            active-text="테스트모드"
+            inactive-text="">
+          </el-switch>
+        </el-tooltip>
+      </div>
+    </div>
+
     <div style="max-height: 450px;overflow-y: auto;" @scroll="handleScroll">
-
-      <!--      <b-list-group style="text-align: center;">
-              &lt;!&ndash;<transition-group name="list-complete" tag="p">&ndash;&gt;
-              <b-list-group-item v-for="(item, index) in event" v-bind:class="{ 'list-group-item-danger': item.danger, 'list-group-item-warning': item.warning, 'list-group-item-info': item.info }">
-                <div class="d-flex w-100 justify-content-between">
-                  <h5 class="mb-1">{{ item.eventType }}</h5>
-                  <small>{{ item.regDate }}</small>
-                </div>
-              </b-list-group-item>
-            </b-list-group>-->
-
       <span v-if="event.length == 0">
           <span>이벤트가 없습니다.</span>
         </span>
@@ -27,6 +33,11 @@
           :size="item.size"
           :timestamp="item.regDate">
           {{item.eventType}}
+          <p v-if="item.eventType=='119통화'">
+            <span class="el-timeline-item__timestamp is-bottom" style="color: #409eff">통화 시작: {{item.data.start}}</span>
+            <br>
+            <span class="el-timeline-item__timestamp is-bottom" style="color: #409eff">통화 종료: {{item.data.end}}</span>
+          </p>
         </el-timeline-item>
       </el-timeline>
     </div>
@@ -42,12 +53,37 @@
     name: "DeviceStatus",
     props: ["phone"],
     methods: {
-      handleScroll(event) {
-        if ((event.target.offsetHeight + event.target.scrollTop) >= event.target.scrollHeight) {
-          this.hasScrolledToBottom = true;
-          this.offset += 1
+      toggleTestMode(){
+
+        if(this.isActiveTestMode) {
+          //테스트모드 활성화
+          this.offset = 0
+          this.testEventList()
+        }else{
+          //테스트모드 비활성화
+          this.offset = 0
           this.evnetList()
         }
+      },
+      handleScroll(event) {
+        if(!this.isActiveTestMode){
+          if ((event.target.offsetHeight + event.target.scrollTop) >= event.target.scrollHeight) {
+            this.offset += 1
+            this.evnetList()
+          }
+        }else{
+          if ((event.target.offsetHeight + event.target.scrollTop) >= event.target.scrollHeight) {
+            this.offset += 1
+            this.testEventList()
+          }
+        }
+      },
+      testEventList(){
+        let params = {
+          param1: this.$route.params.id,
+          param2: this.offset
+        }
+        this.getTestEventList(params)
       },
       evnetList() {
         let params = {
@@ -57,13 +93,16 @@
         this.getEventList2(params)
       },
       ...recipientHelper.mapActions([
+        'getTestEventList',
         'getRefreshEventList',
+        'getRefreshTestEventList',
         'getEventList2'
       ]),
     },
     data() {
       return {
-        offset : 0
+        offset : 0,
+        isActiveTestMode: false
       }
     },
     created() {
@@ -71,7 +110,12 @@
     },
     mounted() {
       this.counterInterval = setInterval(() => {
-        this.getRefreshEventList(this.$route.params.id)
+        if(!this.isActiveTestMode){
+          this.getRefreshEventList(this.$route.params.id)
+        }else{
+          this.getRefreshTestEventList(this.$route.params.id)
+        }
+
       }, 5000)
     },
     beforeDestroy() {
@@ -111,4 +155,5 @@
   .list-complete-leave-active {
     position: absolute;
   }
+
 </style>

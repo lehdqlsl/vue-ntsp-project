@@ -7,7 +7,7 @@
             <div slot="header" class="icon-warning">
             </div>
             <div slot="content">
-              <h1 class="stat-title" @click="gatewayList('Normal')" style="cursor: pointer;">{{ posts.Normal }}</h1>
+              <h1 class="stat-title" @click="gatewayList('0')" style="cursor: pointer;">{{ posts.Normal }}</h1>
             </div>
             <div slot="footer">
               정상
@@ -20,7 +20,7 @@
             <div slot="header" class="icon-danger">
             </div>
             <div slot="content">
-              <h1 class="stat-title" @click="gatewayList('Non_Receive')" style="cursor: pointer;">{{ posts.Non_Receive
+              <h1 class="stat-title" @click="gatewayList('2')" style="cursor: pointer;">{{ posts.Non_Receive
                 }}</h1>
             </div>
             <div slot="footer">
@@ -35,7 +35,7 @@
               <i class="nc-icon nc-vector text-danger"></i>
             </div>
             <div slot="content">
-              <h1 class="stat-title" @click="gatewayList('Unplug')" style="cursor: pointer;">{{ posts.Unplug }}</h1>
+              <h1 class="stat-title" @click="gatewayList('1')" style="cursor: pointer;">{{ posts.Unplug }}</h1>
             </div>
             <div slot="footer">
               차단
@@ -49,7 +49,7 @@
               <i class="nc-icon nc-favourite-28 text-primary"></i>
             </div>
             <div slot="content">
-              <h1 class="stat-title" @click="gatewayList('AS')" style="cursor: pointer;">{{ posts.AS }}</h1>
+              <h1 class="stat-title" @click="gatewayList('3')" style="cursor: pointer;">{{ posts.AS }}</h1>
             </div>
             <div slot="footer">
               점검
@@ -258,7 +258,7 @@
     },
   }
 </script>
-<style>
+<style scoped>
   .red {
     background-color: #f44336;
   }

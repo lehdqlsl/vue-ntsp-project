@@ -1,5 +1,5 @@
 <template>
-  <card class="card-user">
+  <UserCard class="card-user">
     <img slot="image" src="https://ununsplash.imgix.net/photo-1431578500526-4d9613015464?fit=crop&fm=jpg&h=300&q=75&w=400" alt="..."/>
     <div class="author">
       <el-link type="primary" @click="changeInfo" v-if="!editable" style="font-size: 14px;position:absolute;right: 20px;margin-top: 75px;">수정하기</el-link>
@@ -34,17 +34,18 @@
       </div>
     </div>
 
-    <div slot="footer" class="text-center justify-content-center" style="display: flex">
+    <div slot="footer" class="text-center d-flex justify-content-center">
+      <template v-if="recipientInfo.gateway_status != 3">
+        <h4 class="mr-2" v-if="recipientInfo.current_status == 7" style="font-weight: bold"><el-tag type="warning">활동미감지</el-tag></h4>
+        <h4 class="mr-2" v-if="recipientInfo.current_status == 8" style="font-weight: bold"><el-tag type="success">활동중</el-tag></h4>
+        <h4 class="mr-2" v-if="recipientInfo.current_status == 17" style="font-weight: bold"><el-tag type="success">외출</el-tag></h4>
+        <h4 class="mr-2" v-if="recipientInfo.current_status == 18" style="font-weight: bold"><el-tag type="success">재실</el-tag></h4>
 
-      <h4 class="d-inline mr-1" style="font-size: 19px;" v-if="recipientInfo.current_status == 7"><b-badge pill variant="warning">활동미감지</b-badge></h4>
-      <h4 class="d-inline mr-1" style="font-size: 19px;" v-if="recipientInfo.current_status == 8"><b-badge pill variant="success">활동중</b-badge></h4>
-      <h4 class="d-inline mr-1" style="font-size: 19px;" v-if="recipientInfo.current_status == 17"><b-badge pill variant="success">외출</b-badge></h4>
-      <h4 class="d-inline mr-1" style="font-size: 19px;" v-if="recipientInfo.current_status == 18"><b-badge pill variant="success">재실</b-badge></h4>
-
-      <h4 class="d-inline mr-1" style="font-size: 19px;" v-if="recipientInfo.gateway_status == 0"><b-badge pill variant="success">G/W 정상</b-badge></h4>
-      <h4 class="d-inline mr-1" style="font-size: 19px;" v-if="recipientInfo.gateway_status == 1"><b-badge pill variant="danger">전원차단</b-badge></h4>
-      <h4 class="d-inline mr-1" style="font-size: 19px;" v-if="recipientInfo.gateway_status == 2"><b-badge pill variant="danger">미수신</b-badge></h4>
-      <h4 class="d-inline mr-1" style="font-size: 19px;" v-if="recipientInfo.gateway_status == 3"><b-badge pill variant="info">점검</b-badge></h4>
+        <h4 class="mr-1" v-if="recipientInfo.gateway_status == 0" style="font-weight: bold"><el-tag>G/W 정상</el-tag></h4>
+        <h4 class="mr-1" v-if="recipientInfo.gateway_status == 1" style="font-weight: bold"><el-tag type="warning">전원차단</el-tag></h4>
+        <h4 class="mr-1" v-if="recipientInfo.gateway_status == 2" style="font-weight: bold"><el-tag type="danger">미수신</el-tag></h4>
+      </template>
+      <h4 class="mr-1" v-if="recipientInfo.gateway_status == 3" style="font-weight: bold"><el-tag type="info">점검</el-tag></h4>
     </div>
 
     <el-dialog
@@ -66,12 +67,12 @@
         <el-button @click="openDialog = false">취소</el-button>
       </span>
     </el-dialog>
-  </card>
+  </UserCard>
 
 
 </template>
 <script>
-  import Card from 'src/components/Cards/Card.vue'
+  import UserCard from 'src/components/Cards/UserCard.vue'
   import common from 'src/store/common'
   import {createNamespacedHelpers} from "vuex";
 
@@ -79,7 +80,7 @@
 
   export default {
     components: {
-      Card
+      UserCard
     },
     props: ['phone'],
     data () {

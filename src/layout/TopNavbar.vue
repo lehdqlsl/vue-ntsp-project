@@ -50,7 +50,13 @@
             <a class="dropdown-item" href="#">Separated link</a>
           </base-dropdown>-->
           <li class="nav-item">
-            <a href="/" class="nav-link">
+            <a class="nav-link">
+              {{ this.$session.get('id') }}
+              ({{ this.$session.get('name') }})
+            </a>
+          </li>
+          <li class="nav-item">
+            <a @click="logout" class="nav-link" style="cursor:pointer;">
               Logout
             </a>
           </li>
@@ -60,12 +66,20 @@
   </nav>
 </template>
 <script>
+  import {createNamespacedHelpers} from "vuex";
+
+  const authHelper = createNamespacedHelpers('auth')
+
   export default {
+
     computed: {
       routeName() {
         const {name} = this.$route
         return this.capitalizeFirstLetter(name)
-      }
+      },
+      ...authHelper.mapState({
+        user: state => state.user,
+      })
     },
     data() {
       return {
@@ -77,6 +91,10 @@
       }
     },
     methods: {
+      logout(){
+        this.$session.destroy()
+        this.$router.push('/login')
+      },
       btnSearch() {
         if(this.$router.currentRoute.name != 'RecipientList'){
           this.$router.push(

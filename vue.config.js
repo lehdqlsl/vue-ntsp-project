@@ -6,6 +6,7 @@ function resolveSrc(_path) {
 }
 
 module.exports = {
+  publicPath: process.env.VUE_APP_LOC,
   lintOnSave: false,
   configureWebpack: {
     // Set up all the aliases we use in our app.
@@ -19,7 +20,8 @@ module.exports = {
       new webpack.optimize.LimitChunkCountPlugin({
         maxChunks: 6
       })
-    ]
+    ],
+    entry: ["babel-polyfill", "./src/main.js"]
   },
   pwa: {
     name: 'Vue Light Bootstrap Dashboard',
@@ -31,5 +33,6 @@ module.exports = {
   css: {
     // Enable CSS source maps.
     sourceMap: process.env.NODE_ENV !== 'production'
-  }
+  },
+  transpileDependencies: ['vuex-persist']
 };

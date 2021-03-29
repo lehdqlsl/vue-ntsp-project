@@ -3,7 +3,6 @@ import DashboardLayout from '../layout/DashboardLayout.vue'
 import NotFound from '../pages/NotFoundPage.vue'
 
 // Admin pages
-import UserProfile from 'src/pages/UserProfile.vue'
 import TableList from 'src/pages/TableList.vue'
 import Typography from 'src/pages/Typography.vue'
 import Icons from 'src/pages/Icons.vue'
@@ -14,8 +13,7 @@ import Login from 'src/layout/Login.vue'
 const routes = [
   {
     path: '/',
-    component: Login,
-    redirect: '/login'
+    redirect: '/admin',
   },
   {
     path: '/login',
@@ -35,11 +33,6 @@ const routes = [
         path: 'emer-overview',
         name: 'Emer Overview',
         component: () => import('src/pages/EmerOverview.vue')
-      },
-      {
-        path: 'user',
-        name: 'User',
-        component: () => import('src/pages/UserProfile.vue')
       },
       {
         path: 'table-list',
@@ -83,15 +76,16 @@ const routes = [
         component: () => import('src/pages/EventRenew.vue')
       },
       {
+        path: 'gateway-list',
+        name: 'GatewayList',
+        props: true,
+        component: () => import('src/pages/GatewayList')
+      },
+      {
         path: 'recipient-list',
         name: 'RecipientList',
         props: true,
-        component: () => import('src/pages/RecipientList'),
-        children: [{
-          path: 'user-info/:id',
-          name: 'UserInfo',
-          component: () => import('src/components/UserDetail/UserInfo')
-        }]
+        component: () => import('src/pages/RecipientList')
       },
       {
         path: 'user-info/:id',
@@ -112,6 +106,11 @@ const routes = [
         path: 'remote-manager',
         name: 'RemoteManager',
         component: () => import('src/pages/RemoteManager')
+      },
+      {
+        path: 'history-list',
+        name: 'HistoryList',
+        component: () => import('src/pages/HistoryList')
       },
       {
         path: 'upgrade',

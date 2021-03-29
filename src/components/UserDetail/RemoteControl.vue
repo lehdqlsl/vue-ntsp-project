@@ -1,16 +1,21 @@
 <template>
   <div>
     <div class="row">
-      <div class="col-sm-6">
-        <el-button @click="clickCycle" class="col-sm-3 mb-2" style="margin-left:10px;">주기보고</el-button>
-        <el-button @click="clickOpen" class="col-sm-3 mb-2">원격개통</el-button>
-        <el-button @click="clickStop" class="col-sm-3 mb-2">응급상황 해제</el-button>
-        <el-button @click="clickReboot" class="col-sm-3 mb-2">테블릿 재부팅</el-button>
-        <el-button @click="clickIndoor" class="col-sm-3 mb-2">재실보고</el-button>
-        <el-button @click="clickAct" class="col-sm-3 mb-2">활동보고</el-button>
-        <el-button @click="centerDialogVisible = true" class="col-sm-3 mb-2" style="margin-left:10px;">로그요청</el-button>
-        <el-button @click="appDialogVisible = true" class="col-sm-3 mb-2" style="margin-left:10px;">G/W 업데이트</el-button>
-        <el-button @click="fwDialogVisible = true" class="col-sm-3 mb-2" style="margin-left:10px;">F/W 업데이트</el-button>
+      <div class="col-sm-6 text-center justify-content-center" style="display: flex; align-items: center;">
+        <div>
+          <el-button @click="clickCycle" class="col-xxl-3 col-sm-4 mb-2" style="margin-left:10px;">주기보고</el-button>
+          <el-button @click="clickOpen" class="col-xxl-3 col-sm-4 mb-2">원격개통</el-button>
+          <el-button @click="clickStop" class="col-xxl-3 col-sm-4 mb-2">응급상황 해제</el-button>
+          <el-button @click="clickReboot" class="col-xxl-3 col-sm-4 mb-2">테블릿 재부팅</el-button>
+          <el-button @click="clickIndoor" class="col-xxl-3 col-sm-4 mb-2">재실보고</el-button>
+          <el-button @click="clickAct" class="col-xxl-3 col-sm-4 mb-2">활동보고</el-button>
+          <el-button @click="centerDialogVisible = true" class="col-xxl-3 col-sm-4 mb-2" style="margin-left:10px;">로그요청
+          </el-button>
+          <el-button @click="appDialogVisible = true" class="col-xxl-3 col-sm-4 mb-2" style="margin-left:10px;">G/W 업데이트
+          </el-button>
+          <el-button @click="fwDialogVisible = true" class="col-xxl-3 col-sm-4 mb-2" style="margin-left:10px;">F/W 업데이트
+          </el-button>
+        </div>
       </div>
 
       <div class="col-sm-6">
@@ -83,7 +88,7 @@
         minlength="6"
         maxlength="6"
         show-word-limit
-        >
+      >
       </el-input>
       <span slot="footer" class="dialog-footer">
         <el-button type="primary" @click="clickApp">요청</el-button>
@@ -136,23 +141,23 @@
         appDialogVisible: false,
         fwDialogVisible: false,
         radio: "latest",
-        disabled:true,
-        inputVersion:"latest"
+        disabled: true,
+        inputVersion: "latest"
       };
     },
     methods: {
-      close(){
+      close() {
         this.fwDialogVisible = false
         this.appDialogVisible = false
         this.inputVersion = "latest"
         this.radio = "latest"
         this.disabled = true
       },
-      radioChange(value){
-        if(value == "latest"){
+      radioChange(value) {
+        if (value == "latest") {
           this.disabled = true
           this.inputVersion = "latest"
-        }else if(value == "select"){
+        } else if (value == "select") {
           this.disabled = false
           this.inputVersion = ""
         }
@@ -212,7 +217,7 @@
         );
       },
       clickApp() {
-        axios.get(common.define.DEST + '/gateways/'+this.$route.params.id+'/request-update/app/'+this.inputVersion).then(
+        axios.get(common.define.DEST + '/gateways/' + this.$route.params.id + '/request-update/app/' + this.inputVersion).then(
           this.$notify({
             title: 'Success',
             message: 'App 업데이트 요청이 완료되었습니다.',
@@ -222,7 +227,7 @@
         this.appDialogVisible = false
       },
       clickFW() {
-        axios.get(common.define.DEST + '/gateways/'+this.$route.params.id+'/request-update/fw/'+this.inputVersion).then(
+        axios.get(common.define.DEST + '/gateways/' + this.$route.params.id + '/request-update/fw/' + this.inputVersion).then(
           this.$notify({
             title: 'Success',
             message: 'FW 업데이트 요청이 완료되었습니다.',

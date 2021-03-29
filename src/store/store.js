@@ -8,7 +8,8 @@ import Emergency from './emergency'
 import RecipientList from "../components/UserDetail/RecipientList";
 import userdetail from "./userdetail";
 import auth from "./auth"
-import failure from "@/store/failure";
+import failure from "./failure";
+import Search from "./search";
 Vue.use(Vuex);
 
 export const store = new Vuex.Store({
@@ -17,6 +18,7 @@ export const store = new Vuex.Store({
     emergency: Emergency,
     recipient: userdetail,
     failure: failure,
-    auth: auth
+    auth: auth,
+    search: Search
   }
 });

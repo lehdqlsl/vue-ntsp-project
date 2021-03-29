@@ -1,5 +1,5 @@
 <template>
-  <el-tabs v-model="select" :stretch="true"
+  <el-tabs v-model="select" :stretch="false"
            style="max-height: 500px;" @tab-click="handleClick">
 
     <el-tab-pane label="활동량" name="init" lazy>

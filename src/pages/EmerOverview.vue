@@ -209,7 +209,7 @@
     }
   }
 </script>
-<style>
+<style scoped>
   .red {
     background-color: #f44336;
   }

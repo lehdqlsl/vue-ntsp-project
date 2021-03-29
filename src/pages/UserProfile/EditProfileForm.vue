@@ -7,9 +7,6 @@
         <b-tab title="활동" lazy>
           <test2></test2>
         </b-tab>
-        <b-tab title="수면" lazy>
-          <test3></test3>
-        </b-tab>
         <b-tab title="장비" lazy>
           <test4></test4>
         </b-tab>
@@ -19,7 +16,6 @@
 <script>
   import test1 from 'src/components/user/test1'
   import test2 from 'src/components/user/test2'
-  import test3 from 'src/components/user/test3'
   import test4 from 'src/components/user/test4'
   import Card from 'src/components/Cards/Card.vue'
 
@@ -28,7 +24,6 @@
       Card,
       test1,
       test2,
-      test3,
       test4
     },
     data () {

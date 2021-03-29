@@ -10,13 +10,18 @@
         <i class="nc-icon nc-ambulance"></i>
         <p>응급 대시보드</p>
       </sidebar-link>
+      <sidebar-link to="/admin/history-list">
+        <i class="el-icon-document-copy"></i>
+        <p>이력 조회</p>
+      </sidebar-link>
+      <hr>
+      <sidebar-link to="/admin/gateway-list">
+        <i class="nc-icon nc-bullet-list-67"></i>
+        <p>장비 검색</p>
+      </sidebar-link>
       <sidebar-link to="/admin/recipient-list">
         <i class="nc-icon nc-bullet-list-67"></i>
-        <p>게이트웨이 관리</p>
-      </sidebar-link>
-      <sidebar-link to="/admin/sensor-list">
-        <i class="nc-icon nc-bullet-list-67"></i>
-        <p>센서 관리</p>
+        <p>대상자 검색</p>
       </sidebar-link>
       <sidebar-link to="/admin/notice-list">
         <i class="nc-icon nc-notes"></i>

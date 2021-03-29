@@ -12,14 +12,14 @@
                          :phone="phone">
           </device-status>
         </div>
-        <div class="col-xxl-6 col-xl-5 col-lg-12 col-md-7 col-sm-12 d-flex">
+        <div class="col-xxl-6 col-xl-5 col-lg-12 col-md-12 col-sm-12 d-flex">
           <user-life class="flex-fill"
                      :phone="phone">
           </user-life>
         </div>
 
         <div class="col-xxl-3 col-xl-4 col-lg-12 col-md-5 col-sm-12 d-flex">
-          <event-list class="flex-fill"
+          <event-list class="flex-fill" style="margin-bottom: 0px;"
                       :phone="phone">
           </event-list>
         </div>

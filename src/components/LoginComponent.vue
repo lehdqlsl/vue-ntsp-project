@@ -95,8 +95,16 @@
 
         axios.post(common.define.DEST + '/login', param).then((response) => {
           this.$store.commit("auth/SET_TOKEN", response.data.token)
+
           axios.defaults.headers.common['token'] = response.data.token;
           this.$cookies.set("token", response.data.token);
+          let json = JSON.parse(response.data.user)
+
+          this.$session.start()
+          this.$session.set('id', json.userId)
+          this.$session.set('token', response.data.token)
+          this.$session.set('name', json.userName)
+          this.$session.set('role', json.role)
 
           this.$router.push('/admin/overview')
         }, (error) => {
@@ -110,9 +118,7 @@
         if (!valid) {
           return;
         }
-
         await this.simulateLogin();
-
       }
     },
 

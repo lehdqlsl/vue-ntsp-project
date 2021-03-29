@@ -13,6 +13,9 @@
  * The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
 
  */
+// IE 11 설정
+import 'es6-promise/auto'
+
 import Vue from 'vue'
 import VueRouter from 'vue-router'
 import App from './App.vue'
@@ -21,6 +24,8 @@ import ElementUI from 'element-ui'
 import locale from 'element-ui/lib/locale/lang/ko'
 import 'element-ui/lib/theme-chalk/index.css'
 import VueDataTables from 'vue-data-tables'
+import VueSession from 'vue-session'
+
 // LightBootstrap plugin
 import LightBootstrap from './light-bootstrap-main'
 import VueCookies from "vue-cookies";
@@ -33,6 +38,7 @@ import {createNamespacedHelpers} from "vuex";
 import axios from "axios";
 import auth from "./store/auth";
 
+
 // axios setting
 //axios.defaults.headers.common['Access-Control-Allow-Origin'] = "*"
 
@@ -42,7 +48,7 @@ Vue.use(LightBootstrap)
 Vue.use(ElementUI, {locale} )
 Vue.use(VueDataTables)
 Vue.use(VueCookies)
-
+Vue.use(VueSession)
 Vue.$cookies.config("7d");
 // configure router
 const router = new VueRouter({
@@ -68,22 +74,28 @@ axios.interceptors.response.use(function (response) {
   return response
 }, function (error){
   if(error.response.status == 401 && error.response.message != 'AUTH_002'){
-    location.href="/"
+    return Promise.reject(error);
   }
   return error
 });
 
-
+const session = Vue.prototype.$session;
 router.beforeEach((to, from, next) => {
   let token = Vue.$cookies.get('token');
+  let to2 = session.get('token');
 
-  if(to.path == '/login'){
-    next()
-  }else if (to.name !== 'Login' && (token == null || token == 'null')) {
-    location.href='/'
-  } else {
+  if(to2 === undefined && to.path != '/login'){
+    next('login')
+  }else {
     next()
   }
+  // if(to.path == '/login'){
+  //   next()
+  // }else if (to.name !== 'Login' && (token == null || token == 'null')) {
+  //   location.href='/'
+  // } else {
+  //   next()
+  // }
 })
 
 /* eslint-disable no-new */

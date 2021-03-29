@@ -24,7 +24,7 @@ const actions = {
 const mutations = {
   SET_TOKEN(state, token) {
     state.token = token
-  }
+  },
 }
 
 //export store module

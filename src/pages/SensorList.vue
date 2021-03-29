@@ -3,9 +3,9 @@
     <div class="container-fluid">
       <div class="row">
         <div class="col-xl-6">
-<!--          <card>-->
-<!--            <el-button @click="btnSelect" icon="el-icon-search" circle></el-button>-->
-<!--          </card>-->
+          <!--          <card>-->
+          <!--            <el-button @click="btnSelect" icon="el-icon-search" circle></el-button>-->
+          <!--          </card>-->
         </div>
         <div class="col-xl-12">
           <card>
@@ -43,7 +43,8 @@
               </el-row>
             </div>
 
-            <data-tables :data="sensors" :filters="filters" :page-size="10" :pagination-props="{'pageSizes': [10,20,50]}">
+            <data-tables :data="sensors" :filters="filters" :page-size="10"
+                         :pagination-props="{'pageSizes': [10,20,50]}">
               <el-table-column
                 prop="phone"
                 label="G/W 번호">

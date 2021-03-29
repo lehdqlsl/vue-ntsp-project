@@ -31,10 +31,6 @@
                   <b-th class="pl-3 pt-3"><p>해결</p></b-th>
                   <b-td class="pl-3 pt-3"><p>{{ failure.closed }}</p></b-td>
                 </b-tr>
-                <b-tr>
-                  <b-th class="pl-3 pt-3"><p>처리자</p></b-th>
-                  <b-td class="pl-3 pt-3"><p>Admin(이동빈)</p></b-td>
-                </b-tr>
               </b-table-simple>
             </div>
 
@@ -60,11 +56,15 @@
                   <label>메시지</label>
                 </div>
                 <div class="col-lg-8">
-                  <b-form-textarea
-                    v-model="formData.contents"
-                    no-resize
+                  <el-input
                     rows="6"
-                    style="width: 100%"></b-form-textarea>
+                    type="textarea"
+                    v-model="contents2"
+                    maxlength="50"
+                    show-word-limit
+                    resize="none"
+                  >
+                  </el-input>
                 </div>
               </div>
               <div class="row mb-3">
@@ -142,7 +142,9 @@
         'getFailureList'
       ]),
       putData() {
+        this.formData.contents = this.contents2.replace(/(?:\r\n|\r|\n)/g, '<br />');
         this.formData.failureId = this.failure.failureId
+        this.formData.user = this.$session.get('id')
         this.postFailureAction(this.formData);
         this.$router.go(0)
       },
@@ -159,10 +161,12 @@
     },
     data() {
       return {
+        contents2: '',
         formData: {
           contents: '',
           isClosed: '',
-          isAware: ''
+          isAware: '',
+          user: ''
         }
       }
     }

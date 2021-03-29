@@ -73,6 +73,21 @@ const actions = {
       commit('GET_NEW_EVENT_LIST', Response.data)
     })
   },
+  getRefreshTestEventList({commit}, params) {
+    state.eventLoading = true
+    axios.get(common.define.DEST + '/gateways/' + params + '/events/0/testmode').then((Response) => {
+      commit('GET_NEW_TEST_EVENT_LIST', Response.data)
+    })
+  },
+  getTestEventList({commit}, params){
+    state.eventLoading = true
+    if (params.param2 == 0) {
+      state.event = []
+    }
+    axios.get(common.define.DEST + '/gateways/' + params.param1 + '/events/' + params.param2+'/testmode').then((Response) => {
+      commit('GET_TEST_EVENT_LIST', Response.data)
+    })
+  },
   getEventList2({commit}, params) {
     state.eventLoading = true
     if (params.param2 == 0) {
@@ -165,6 +180,19 @@ const actions = {
 
 //to handle mutations
 const mutations = {
+  SET_RESET(state) {
+    state.gateways = []
+    state.sensors = []
+  },
+  GET_TEST_EVENT_LIST(state, list){
+    for (let i = 0; i < list.length; i++) {
+      let eventType = list[i].eventType
+      list[i].eventType = common.tranEventType(eventType)
+      list[i].type = 'info'
+      state.event.push(list[i])
+    }
+    state.eventLoading = false
+  },
   SET_GOOUT(state, act){
     state.goout = act.inactivity
     state.statLoading=true
@@ -207,7 +235,7 @@ const mutations = {
     state.logList = list
   },
   GET_RECIPIENT_DATA(state, data) {
-    data.image = 'http://14.47.229.122:8443/open/v1/recipients/' + data.phone + '/profile'
+    data.image = common.define.DEST + '/open/v1/recipients/' + data.phone + '/profile'
     data.phone = common.FormatNumber(data.phone)
     state.recipientInfo = data
   },
@@ -238,10 +266,39 @@ const mutations = {
       }
       state.event.push(list[i])
     }
-
     state.eventLoading = false
   },
   GET_NEW_EVENT_LIST(state, list) {
+    //state.event = []
+    let tmp = []
+    for (let i = 0; i < list.length; i++) {
+      if (state.event[0].eventId != list[i].eventId) {
+        let eventType = list[i].eventType
+
+        list[i].eventType = common.tranEventType(eventType)
+        if (eventType == 11 || eventType == 15 || eventType == 2) {
+          list[i].type = 'danger'
+        } else if (eventType == 7 || eventType == 5) {
+          list[i].type = 'warning'
+        } else if (eventType == 100) {
+          list[i].type = 'success'
+        } else {
+          list[i].type = 'primary'
+        }
+
+        tmp.push(list[i])
+      } else {
+        break;
+      }
+    }
+
+    for (let i = 0; i < tmp.length; i++) {
+      state.event.unshift(tmp[i])
+    }
+
+    state.eventLoading = false
+  },
+  GET_NEW_TEST_EVENT_LIST(state, list) {
     //state.event = []
     let tmp = []
     for (let i = 0; i < list.length; i++) {
@@ -281,9 +338,9 @@ const mutations = {
         power: list[i].power == 1 ? "연결" : "차단",
         send_reg_date: list[i].send_reg_date,
         mac_addr: list[i].mac_addr,
-        phone: list[i].phone
+        phone: common.FormatNumber(list[i].phone),
+        sensitivity: list[i].sensitivity
       }
-      data.network = data.network + "(" + list[i].sensitivity + ")"
       state.gateways.push(data)
     }
     //state.gateways = list

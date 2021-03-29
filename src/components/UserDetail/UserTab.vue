@@ -13,8 +13,7 @@
   </card>-->
   <el-tabs
           type="border-card"
-          :stretch="true"
-          style="max-height: 522px;">
+          :stretch="true">
     <el-tab-pane lazy>
       <span slot="label"><i class="el-icon-date"></i> 주기보고</span>
       <period-report :phone="phone"></period-report>
@@ -29,7 +28,7 @@
     </el-tab-pane>
     <el-tab-pane label="설정" lazy>
       <span slot="label"><i class="el-icon-setting"></i> 설정</span>
-
+      <setting :phone="phone"></setting>
     </el-tab-pane>
   </el-tabs>
 </template>
@@ -38,6 +37,7 @@
   import SensorData from "./SensorData"
   import PeriodReport from "./PeriodReport"
   import RemoteControl from "./RemoteControl"
+  import Setting from "./Setting"
 
   export default {
     name: "DeviceStatus",
@@ -45,7 +45,8 @@
     components: {
       SensorData,
       PeriodReport,
-      RemoteControl
+      RemoteControl,
+      Setting
     }
   }
 </script>
