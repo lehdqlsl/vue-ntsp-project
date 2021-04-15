@@ -18,13 +18,13 @@
       <span slot="label"><i class="el-icon-date"></i> 주기보고</span>
       <period-report :phone="phone"></period-report>
     </el-tab-pane>
+    <el-tab-pane label="원격제어" lazy>
+      <span slot="label"><i class="el-icon-phone"></i>역점검 및 원격제어</span>
+      <remote-control :phone="phone"></remote-control>
+    </el-tab-pane>
     <el-tab-pane label="센서데이터" lazy>
       <span slot="label"><i class="el-icon-s-data"></i> 센서데이터</span>
       <sensor-data :phone="phone"></sensor-data>
-    </el-tab-pane>
-    <el-tab-pane label="원격제어" lazy>
-      <span slot="label"><i class="el-icon-phone"></i> 원격제어</span>
-      <remote-control :phone="phone"></remote-control>
     </el-tab-pane>
     <el-tab-pane label="설정" lazy>
       <span slot="label"><i class="el-icon-setting"></i> 설정</span>

@@ -5,21 +5,65 @@
 
         <div class="font-weight-bold" style="font-size: 0.9rem;margin-bottom: 5px;">게이트웨이</div>
 
-        <i v-if="gateway.power==1" class="fa fa-plug fa-2x" aria-hidden="true" style="color: #05AE0E;"></i>
+        <i v-if="gateway.power==1" class="fa fa-plug fa-2x" aria-hidden="true" style="color: #05ae0e;"></i>
         <i v-if="gateway.power==0" class="fa fa-plug fa-2x" aria-hidden="true" style="color: #EE2D20;"></i>
 
-        <el-tooltip class="item" effect="dark" placement="top" :content="'LTE감도: ' + gateway.sensitivity">
-          <i v-if="gateway.network==1" class="fa fa-signal fa-2x" aria-hidden="true" style="color: #05AE0E;"></i>
-          <i v-if="gateway.network==0" class="fa fa-signal fa-2x" aria-hidden="true" style="color: #EE2D20;"></i>
+        <el-tooltip v-if="gateway.network==1" class="item" effect="dark" placement="bottom"
+                    :content="'LTE감도: ' + gateway.sensitivity">
+          <i class="fa fa-signal fa-2x" aria-hidden="true" style="color: #05AE0E;"></i>
         </el-tooltip>
+
+        <el-tooltip v-if="gateway.network==0" class="item" effect="dark" placement="bottom"
+                    :content="'LTE감도: ' + gateway.sensitivity">
+          <i class="fa fa-signal fa-2x" aria-hidden="true" style="color: #EE2D20;"></i>
+        </el-tooltip>
+
+        <el-tooltip v-if="gateway.battery>75" class="item" effect="dark" placement="bottom"
+                    :content="'배터리: ' + gateway.battery + '%'">
+          <i class="fa fa-battery-full fa-2x" aria-hidden="true" style="color: #05AE0E;"></i>
+        </el-tooltip>
+
+        <el-tooltip v-if="gateway.battery<=75 && gateway.battery>50" class="item" effect="dark" placement="bottom"
+                    :content="'배터리: ' + gateway.battery + '%'">
+          <i class="fa fa-battery-three-quarters fa-2x" aria-hidden="true" style="color: #05AE0E;"></i>
+        </el-tooltip>
+
+        <el-tooltip v-if="gateway.battery<=50 && gateway.battery>25" class="item" effect="dark" placement="bottom"
+                    :content="'배터리: ' + gateway.battery + '%'">
+          <i class="fa fa-battery-half fa-2x" aria-hidden="true" style="color: #05AE0E;"></i>
+        </el-tooltip>
+
+        <el-tooltip v-if="gateway.battery<=25 && gateway.battery>10" class="item" effect="dark" placement="bottom"
+                    :content="'배터리: ' + gateway.battery + '%'">
+          <i class="fa fa-battery-quarter fa-2x" aria-hidden="true" style="color: #EE2D20;"></i>
+        </el-tooltip>
+
+        <el-tooltip v-if="gateway.battery<=10 && gateway.battery>=0" class="item" effect="dark" placement="bottom"
+                    :content="'배터리: ' + gateway.battery + '%'">
+          <i class="fa fa-battery-empty fa-2x" aria-hidden="true" style="color: #EE2D20;"></i>
+        </el-tooltip>
+
       </b-list-group-item>
 
       <b-list-group-item v-for="device in devices">
         <div class="font-weight-bold" style="font-size: 0.9rem;margin-bottom: 5px;">{{ device.devType }}</div>
 
-        <i v-if="device.power==2" class="fa fa-battery-full fa-2x" aria-hidden="true" style="color: #05AE0E;"></i>
-        <i v-if="device.power==1" class="fa fa-battery-full fa-2x" aria-hidden="true" style="color: #f0a810;"></i>
-        <i v-if="device.power==0" class="fa fa-battery-full fa-2x" aria-hidden="true" style="color: #EE2D20;"></i>
+        <span v-if="device.devType == '레이더센서'">
+          <i v-if="device.battery==2" class="fa fa-plug fa-2x" aria-hidden="true" style="color: #05AE0E;"></i>
+          <i v-if="device.battery==1" class="fa fa-plug fa-2x" aria-hidden="true" style="color: #f0a810;"></i>
+          <i v-if="device.battery==0" class="fa fa-plug fa-2x" aria-hidden="true" style="color: #EE2D20;"></i>
+        </span>
+        <span v-else>
+            <el-tooltip v-if="device.battery==2" class="item" effect="dark" placement="bottom" :content="'충만'">
+               <i class="fa fa-battery-full fa-2x" aria-hidden="true" style="color: #05AE0E;"></i>
+            </el-tooltip>
+            <el-tooltip v-if="device.battery==1" class="item" effect="dark" placement="bottom" :content="'부족'">
+               <i class="fa fa-battery-full fa-2x" aria-hidden="true" style="color: #f0a810;"></i>
+            </el-tooltip>
+           <el-tooltip v-if="device.battery==0" class="item" effect="dark" placement="bottom" :content="'교체'">
+              <i class="fa fa-battery-full fa-2x" aria-hidden="true" style="color: #EE2D20;"></i>
+            </el-tooltip>
+        </span>
 
         <el-tooltip class="item" effect="dark" placement="bottom" :content="'감도: ' + device.sensitivity">
           <i v-if="device.network==1" class="fa fa-wifi fa-2x" aria-hidden="true" style="color: #05AE0E;"></i>
@@ -55,7 +99,7 @@
       }),
     },
     watch: {
-      phone: function(newVal, oldVal) {
+      phone: function (newVal, oldVal) {
         this.getDevices(newVal);
       }
     }

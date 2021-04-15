@@ -93,11 +93,6 @@ const routes = [
         component: () => import('src/components/UserDetail/UserInfo'),
       },
       {
-        path: 'sensor-list',
-        name: 'SensorList',
-        component: () => import('src/pages/SensorList')
-      },
-      {
         path: 'notice-list',
         name: 'NoticeList',
         component: () => import('src/pages/NoticeList')

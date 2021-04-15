@@ -1,9 +1,17 @@
-import { Radar } from 'vue-chartjs'
+import { Scatter } from 'vue-chartjs'
 
 export default {
-  extends: Radar,
+  extends: Scatter,
   props: {
-    chartData: {
+    amData: {
+      type: Array,
+      default: () => {
+        return {
+          data: []
+        }
+      }
+    },
+    pmData: {
       type: Array,
       default: () => {
         return {
@@ -14,29 +22,51 @@ export default {
   },
   mounted () {
     this.renderChart({
-      labels: ['활동(%)', '외출(%)', '미감지(%)', '수면(%)'],
       datasets: [
         {
-          label:"요약",
-          data: this.chartData
+          data: this.amData,
+          borderColor : 'rgba(0,94,255,0.2)',
+          backgroundColor : 'rgba(0,94,255,0.2)',
+          label:'오전',
+          fill:false
+        },
+        {
+          data: this.pmData,
+          borderColor : 'rgba(255,0,0,0.2)',
+          backgroundColor : 'rgba(255,0,0,0.2)',
+          label:'오후',
+          fill:false
         }
       ],
     }, {
       responsive: true,
       maintainAspectRatio: false,
-      scale:{
-        ticks:{
-          suggestedMin: 0,
-          /*suggestedMax: 100,*/
-          fontSize: 15
-        },
-        pointLabels: {
-          fontSize: 15
-        }
-      },
       legend:{
-        labels:{
-          fontSize:15
+        position : 'top',
+        labels: {
+          fontSize: 14
+        },
+        display: true
+      },
+      scales:{
+        xAxes:[{
+          ticks:{
+            suggestedMin: -300,
+            suggestedMax: 300,
+            fontSize:14
+          }
+        }],
+        yAxes:[{
+          ticks:{
+            suggestedMax: 500
+          }
+        }]
+      },
+      tooltips: {
+        callbacks: {
+          label: function (tooltipItem, data) {
+            return data.datasets[tooltipItem.datasetIndex].data[tooltipItem.index].date
+          }
         }
       }
     })

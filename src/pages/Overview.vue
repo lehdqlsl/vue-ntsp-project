@@ -208,7 +208,7 @@
       gatewayList(type) {
         this.$router.push(
           {
-            name: 'RecipientList',
+            name: 'GatewayList',
             params: {
               "propsData": type
             }

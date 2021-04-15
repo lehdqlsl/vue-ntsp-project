@@ -31,24 +31,36 @@
         highlight-current-row
         style="width: 100%;cursor: pointer;">
         <el-table-column
+          align="center"
           width="80px"
           prop="id"
           label="보고 번호">
         </el-table-column>
         <el-table-column
+          align="center"
           width="80px"
           prop="app_ver"
-          label="버전">
+          label="App 버전">
         </el-table-column>
         <el-table-column
+          align="center"
+          width="80px"
+          prop="fw_ver"
+          label="F/W 버전">
+        </el-table-column>
+        <el-table-column
+          align="center"
           prop="send_reg_date"
           label="주기보고 날짜">
         </el-table-column>
         <el-table-column
+          align="center"
           prop="regDate"
           label="서버등록 날짜">
         </el-table-column>
         <el-table-column
+          width="80px"
+          align="center"
           prop="sensitivity"
           label="LTE 감도">
         </el-table-column>

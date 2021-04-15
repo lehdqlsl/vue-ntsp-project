@@ -11,8 +11,12 @@
             </el-radio-group>
           </div>
         </div>
-
-
+        <div class="row mt-5">
+          <span class="col-sm-3">데이터 삭제</span>
+          <div class="col-sm-5">
+              <el-button icon="el-icon-delete" @click="deleteGateway" size="mini" type="danger">삭제</el-button>
+          </div>
+        </div>
       </div>
 
       <div class="col-sm-6">
@@ -39,6 +43,19 @@
       };
     },
     methods: {
+      deleteGateway(){
+        this.$confirm('게이트웨이 및 대상자정보를 삭제합니다.', '삭제', {
+          cancelButtonText: '취소',
+          confirmButtonText: '확인',
+          type: 'warning'
+        }).then(() => {
+          axios.delete(common.define.DEST + '/gateways/' + this.$route.params.id).then((Response)=>{
+            location.reload()
+          });
+        }).catch(() => {
+
+        });
+      },
       radioChange(value) {
         if (value == 1) {
           this.$confirm('게이트웨이를 "점검" 상태로 변경하시겠습니까?', '상태 변경', {

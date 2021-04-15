@@ -106,17 +106,32 @@
               </el-row>
             </div>
 
-            <data-tables v-if="searchForm.devType==0" :page-size="10" :pagination-props="{'pageSizes': [10,20,50]}"
+            <data-tables v-if="searchForm.devType==0"
+                         :page-size="10"
+                         :pagination-props="{'pageSizes': [10,20,50]}"
+                         :table-props='{ defaultSort: {
+                           prop: "send_reg_date",
+                           order: "descending"
+                         } }'
                          :data="gateways" :filters="filters">
               <el-table-column
                 prop="phone"
                 sortable
+                :width="200"
                 label="G/W 번호">
                 <template slot-scope="scope">
                   <el-link type="primary" @click="moveUserInfo(scope.row.phone)">{{ scope.row.phone }}</el-link>
                 </template>
               </el-table-column>
               <el-table-column
+                :width="220"
+                prop="mac_addr"
+                sortable
+                label="MAC 주소">
+              </el-table-column>
+              <el-table-column
+                align="center"
+                :width="150"
                 sortable
                 prop="gatewayStatus"
                 label="G/W 상태">
@@ -132,22 +147,38 @@
                 </template>
               </el-table-column>
               <el-table-column
+                align="center"
+                :width="150"
                 prop="app_ver"
                 sortable
                 label="App 버전">
+                <template slot-scope="scope">
+                  {{ scope.row.app_ver }}
+                </template>
               </el-table-column>
               <el-table-column
+                align="center"
+                :width="150"
+                prop="fw_ver"
+                sortable
+                label="F/W 버전">
+              </el-table-column>
+              <el-table-column
+                align="center"
+                :width="180"
                 prop="power"
                 sortable
                 label="전원 상태">
                 <template slot-scope="scope">
                    <span v-if="scope.row.power == '연결'"
-                         style="color:#05AE0E;">{{ scope.row.power }}</span>
+                         style="color:#05AE0E;">{{ scope.row.power }} ({{ scope.row.battery }}%)</span>
                   <span v-if="scope.row.power == '차단'"
-                        style="color:#f0a810;">{{ scope.row.power }}</span>
+                        style="color:#f0a810;">{{ scope.row.power }} ({{ scope.row.battery }}%)</span>
                 </template>
               </el-table-column>
               <el-table-column
+                align="center"
+                :width="180"
                 sortable
                 prop="sensitivity"
                 label="LTE 감도">
@@ -162,6 +193,7 @@
               </el-table-column>
               <el-table-column
                 sortable
+                align="center"
                 prop="send_reg_date"
                 label="마지막 주기보고">
               </el-table-column>
@@ -182,24 +214,24 @@
                 sortable
                 prop="macAddr"
                 label="MAC 주소">
-                <template slot-scope="scope">
-                {{ scope.row.macAddr }}
-                </template>
               </el-table-column>
               <el-table-column
                 sortable
                 prop="devType"
                 label="장비타입"
               >
+                <template slot-scope="scope">
+                  {{ scope.row.devType }}
+                </template>
               </el-table-column>
               <el-table-column
                 sortable
                 prop="battery"
                 label="배터리 상태">
                 <template slot-scope="scope">
-                  <span v-if="scope.row.battery == '정상'" style="color:#05AE0E;">{{ scope.row.battery }}</span>
-                  <span v-if="scope.row.battery == '부족'" style="color:#f0a810;">{{ scope.row.battery }}</span>
-                  <span v-if="scope.row.battery == '교체'" style="color:#EE2D20;">{{ scope.row.battery }}</span>
+                  <span v-if="scope.row.battery == '충만'" style="color:#05AE0E;">{{ scope.row.battery }}</span>
+                  <span v-else-if="scope.row.battery == '부족'" style="color:#f0a810;">{{ scope.row.battery }}</span>
+                  <span v-else-if="scope.row.battery == '교체'" style="color:#EE2D20;">{{ scope.row.battery }}</span>
                 </template>
               </el-table-column>
               <el-table-column
@@ -215,11 +247,13 @@
                 sortable
                 prop="sendRegDate"
                 label="마지막 주기보고">
+                <template slot-scope="scope">
+                  {{ scope.row.sendRegDate }}
+                </template>
               </el-table-column>
             </data-tables>
           </card>
         </div>
-        <router-view></router-view>
       </div>
     </div>
   </div>

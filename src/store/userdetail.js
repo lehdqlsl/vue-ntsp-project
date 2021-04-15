@@ -20,15 +20,23 @@ const state = {
   sensorCycle: [],
   noticeList: [],
   env: {
-    temperature:[],
-    humidity:[],
-    illuminance:[]
+    temperature: [],
+    humidity: [],
+    illuminance: []
   },
-  loading:false,
-  statLoading:false,
+  loading: false,
+  statLoading: false,
   act: [],
   inact: [],
-  goout: []
+  goout: [],
+  remoteList: [],
+  radar: {
+    am: [],
+    pm: [],
+    activity: [],
+    breath: [],
+    heart: [],
+  }
 }
 
 //to handle state
@@ -36,23 +44,23 @@ const getters = {}
 
 //to handle actions
 const actions = {
-  deleteNotice({commit}, params){
-    axios.delete(common.define.DEST + '/recipient/notices/'+ params).then((Response) => {
+  deleteNotice({commit}, params) {
+    axios.delete(common.define.DEST + '/recipient/notices/' + params).then((Response) => {
       location.reload()
     })
   },
-  postNotice({commit}, params){
+  postNotice({commit}, params) {
     axios.post(common.define.DEST + '/recipient/notices', params).then((Response) => {
       location.reload()
     })
   },
-  getNoticeList({commit}, params){
+  getNoticeList({commit}, params) {
     axios.get(common.define.DEST + '/recipient/notices', {params}).then((Response) => {
       commit('GET_NOTICE_LIST', Response.data)
     })
   },
   getSensorPeriod({commit}, params) {
-    axios.get(common.define.DEST + '/sensors/cycles/'+ params).then((Response) => {
+    axios.get(common.define.DEST + '/sensors/cycles/' + params).then((Response) => {
       commit('GET_SENSOR_CYCLE', Response.data)
     })
   },
@@ -79,12 +87,12 @@ const actions = {
       commit('GET_NEW_TEST_EVENT_LIST', Response.data)
     })
   },
-  getTestEventList({commit}, params){
+  getTestEventList({commit}, params) {
     state.eventLoading = true
     if (params.param2 == 0) {
       state.event = []
     }
-    axios.get(common.define.DEST + '/gateways/' + params.param1 + '/events/' + params.param2+'/testmode').then((Response) => {
+    axios.get(common.define.DEST + '/gateways/' + params.param1 + '/events/' + params.param2 + '/testmode').then((Response) => {
       commit('GET_TEST_EVENT_LIST', Response.data)
     })
   },
@@ -104,7 +112,11 @@ const actions = {
   },
   getRecipientInfo({commit}, params) {
     axios.get(common.define.DEST + '/recipients/' + params).then((Response) => {
-      commit('GET_RECIPIENT_DATA', Response.data)
+      if(Response.data == ''){
+        alert("존재하지 않는 대상자입니다.")
+      }else{
+        commit('GET_RECIPIENT_DATA', Response.data)
+      }
     })
   },
   getGatewayList({commit}, params) {
@@ -127,6 +139,11 @@ const actions = {
       commit('GET_LOG_LIST', Response.data)
     })
   },
+  getRequestHistory({commit}, params) {
+    axios.get(common.define.DEST + '/open/v1/gateways/' + params + '/remotes').then((Response) => {
+      commit('GET_REMOTE_LIST', Response.data)
+    })
+  },
   postImageUpload({commit}, formData) {
 
     axios.post(common.define.DEST + '/gateways/' + formData.get('phone') + '/profile', formData, {
@@ -143,8 +160,8 @@ const actions = {
     })
   },
   getTemp({commit}, parameter) {
-    state.loading=false
-    axios.get(common.define.DEST + '/gateways/'+parameter.phone+'/sensors/4/data', {
+    state.loading = false
+    axios.get(common.define.DEST + '/gateways/' + parameter.phone + '/sensors/4/data', {
       params: {
         dateType: parameter.dateType
       }
@@ -152,9 +169,19 @@ const actions = {
       commit('SET_ENV', Response.data)
     })
   },
-  getAct({commit}, parameter){
-    state.statLoading=false
-    axios.get(common.define.DEST + '/gateways/'+parameter.phone+'/sensors/2/data', {
+  getRadar({commit}, parameter) {
+    state.statLoading = false
+    axios.get(common.define.DEST + '/gateways/' + parameter.phone + '/sensors/3/data', {
+      params: {
+        dateType: parameter.dateType
+      }
+    }).then((Response) => {
+      commit('SET_RADAR', Response.data)
+    })
+  },
+  getAct({commit}, parameter) {
+    state.statLoading = false
+    axios.get(common.define.DEST + '/gateways/' + parameter.phone + '/sensors/2/data', {
       params: {
         dateType: parameter.dateType
       }
@@ -162,16 +189,16 @@ const actions = {
       commit('SET_ACT', Response.data)
     })
   },
-  getStat({commit}, parameter){
-    state.statLoading=false
-    axios.get(common.define.DEST + '/gateways/'+parameter.phone+'/stats/'+parameter.eventType, {
+  getStat({commit}, parameter) {
+    state.statLoading = false
+    axios.get(common.define.DEST + '/gateways/' + parameter.phone + '/stats/' + parameter.eventType, {
       params: {
         dateType: parameter.dateType
       }
     }).then((Response) => {
-      if(parameter.eventType == 7){
+      if (parameter.eventType == 7) {
         commit('SET_INACT', Response.data)
-      }else if(parameter.eventType == 17){
+      } else if (parameter.eventType == 17) {
         commit('SET_GOOUT', Response.data)
       }
     })
@@ -180,11 +207,25 @@ const actions = {
 
 //to handle mutations
 const mutations = {
+  SET_RADAR(state, data) {
+    state.radar.am = data.radar.am
+    state.radar.pm = data.radar.pm
+    state.radar.activity = data.activity
+    state.radar.breath = data.breath
+    state.radar.heart = data.heart
+    state.statLoading = true
+  },
+  GET_REMOTE_LIST(state, list) {
+    state.remoteList = list
+  },
   SET_RESET(state) {
     state.gateways = []
     state.sensors = []
   },
-  GET_TEST_EVENT_LIST(state, list){
+  SET_RECIPIENT_RESET(state) {
+    state.recipient = []
+  },
+  GET_TEST_EVENT_LIST(state, list) {
     for (let i = 0; i < list.length; i++) {
       let eventType = list[i].eventType
       list[i].eventType = common.tranEventType(eventType)
@@ -192,38 +233,39 @@ const mutations = {
       state.event.push(list[i])
     }
     state.eventLoading = false
+
   },
-  SET_GOOUT(state, act){
+  SET_GOOUT(state, act) {
     state.goout = act.inactivity
-    state.statLoading=true
+    state.statLoading = true
   },
-  SET_INACT(state, act){
+  SET_INACT(state, act) {
     state.inact = act.inactivity
-    state.statLoading=true
+    state.statLoading = true
   },
-  SET_ACT(state, act){
+  SET_ACT(state, act) {
     state.act = act.activity
-    state.statLoading=true
+    state.statLoading = true
   },
-  SET_ENV(state, env){
+  SET_ENV(state, env) {
     state.env = env
-    state.loading=true
+    state.loading = true
   },
-  GET_NOTICE_LIST(state, list){
+  GET_NOTICE_LIST(state, list) {
     state.noticeList = list
   },
-  GET_SENSOR_CYCLE(state, list){
+  GET_SENSOR_CYCLE(state, list) {
     state.sensorCycle = list
   },
   GET_DEVICES(state, list) {
     state.devices = []
     state.gateway = ''
 
-    for(let i=0;i<list.length;i++){
-      if(list[i].devType == 0){
+    for (let i = 0; i < list.length; i++) {
+      if (list[i].devType == 0) {
         state.gateway = list[i]
         state.gateway.macAddr = common.FormatNumber(list[i].macAddr)
-      }else{
+      } else {
         list[i].devType = common.tranDevType(list[i].devType)
         list[i].macAddr = common.FormatNumber(list[i].macAddr)
         state.devices.push(list[i])
@@ -240,6 +282,13 @@ const mutations = {
     state.recipientInfo = data
   },
   GET_RECIPIENT_LIST(state, list) {
+    state.recipient = []
+    for (let i = 0; i < list.length; i++) {
+      let phone = list[i].recipientInfo.phone
+      let regDate = list[i].recipientInfo.regDate
+      list[i].recipientInfo.phone = common.FormatNumber(phone)
+      list[i].regDate = regDate
+    }
     state.recipient = list
   },
   GET_PERIOD_LIST(state, list) {
@@ -254,17 +303,9 @@ const mutations = {
       let eventType = list[i].eventType
 
       list[i].eventType = common.tranEventType(eventType)
-
-      if (eventType == 11 || eventType == 15 || eventType == 2) {
-        list[i].type = 'danger'
-      } else if (eventType == 7 || eventType == 5) {
-        list[i].type = 'warning'
-      } else if (eventType == 100) {
-        list[i].type = 'success'
-      } else {
-        list[i].type = 'primary'
-      }
+      list[i].type = common.eventTagColor(eventType)
       state.event.push(list[i])
+
     }
     state.eventLoading = false
   },
@@ -276,16 +317,7 @@ const mutations = {
         let eventType = list[i].eventType
 
         list[i].eventType = common.tranEventType(eventType)
-        if (eventType == 11 || eventType == 15 || eventType == 2) {
-          list[i].type = 'danger'
-        } else if (eventType == 7 || eventType == 5) {
-          list[i].type = 'warning'
-        } else if (eventType == 100) {
-          list[i].type = 'success'
-        } else {
-          list[i].type = 'primary'
-        }
-
+        list[i].type = common.eventTagColor(eventType)
         tmp.push(list[i])
       } else {
         break;
@@ -306,16 +338,7 @@ const mutations = {
         let eventType = list[i].eventType
 
         list[i].eventType = common.tranEventType(eventType)
-        if (eventType == 11 || eventType == 15 || eventType == 2) {
-          list[i].type = 'danger'
-        } else if (eventType == 7 || eventType == 5) {
-          list[i].type = 'warning'
-        } else if (eventType == 100) {
-          list[i].type = 'success'
-        } else {
-          list[i].type = 'primary'
-        }
-
+        list[i].type = common.eventTagColor(eventType)
         tmp.push(list[i])
       } else {
         break;
@@ -333,11 +356,13 @@ const mutations = {
     for (let i = 0; i < list.length; i++) {
       let data = {
         app_ver: list[i].app_ver,
+        fw_ver: list[i].fw_ver,
         gatewayStatus: common.failureType(list[i].gatewayStatus),
         network: list[i].network == 1 ? "정상" : "불량",
         power: list[i].power == 1 ? "연결" : "차단",
+        battery: list[i].battery,
         send_reg_date: list[i].send_reg_date,
-        mac_addr: list[i].mac_addr,
+        mac_addr: common.FormatNumber(list[i].mac_addr),
         phone: common.FormatNumber(list[i].phone),
         sensitivity: list[i].sensitivity
       }

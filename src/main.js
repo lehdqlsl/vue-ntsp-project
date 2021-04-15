@@ -64,13 +64,18 @@ const router = new VueRouter({
 })
 
 
+const session = Vue.prototype.$session;
+
 axios.interceptors.request.use(function (config) {
-  let token = Vue.$cookies.get('token');
-  config.headers.token =  token;
+  let token2 = session.get('token');
+  config.headers.token =  token2;
   return config;
 });
 
 axios.interceptors.response.use(function (response) {
+  if(response.data.code == 'AUTH_001'){
+    router.push('/login')
+  }
   return response
 }, function (error){
   if(error.response.status == 401 && error.response.message != 'AUTH_002'){
@@ -79,7 +84,6 @@ axios.interceptors.response.use(function (response) {
   return error
 });
 
-const session = Vue.prototype.$session;
 router.beforeEach((to, from, next) => {
   let token = Vue.$cookies.get('token');
   let to2 = session.get('token');

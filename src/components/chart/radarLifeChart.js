@@ -3,7 +3,23 @@ import { Line } from 'vue-chartjs'
 export default {
   extends: Line,
   props: {
-    chartData: {
+    chartDataActivity: {
+      type: Array,
+      default: () => {
+        return {
+          data: []
+        }
+      }
+    },
+    chartDataBreath: {
+      type: Array,
+      default: () => {
+        return {
+          data: []
+        }
+      }
+    },
+    chartDataHeart: {
       type: Array,
       default: () => {
         return {
@@ -20,11 +36,28 @@ export default {
     this.renderChart({
       datasets: [
         {
-          data: this.chartData,
-          borderColor : 'rgba(255, 0, 0, 0.20)',
-          backgroundColor : 'rgba(255, 0, 0, 0.20)',
+          data: this.chartDataActivity,
+          borderColor : 'rgba(47,250,49,0.3)',
+          backgroundColor :'rgba(47,250,49,0.3)',
           label:"활동량",
-          fill:false
+          fill:false,
+          radius: 0,
+        },
+        {
+          data: this.chartDataBreath,
+          borderColor : 'rgba(0,165,255,0.3)',
+          backgroundColor : 'rgba(0,165,255,0.3)',
+          label:"호흡",
+          fill:false,
+          radius: 0,
+        },
+        {
+          data: this.chartDataHeart,
+          borderColor : 'rgba(255,0,0,0.3)',
+          backgroundColor : 'rgba(255,0,0,0.3)',
+          label:"심박",
+          fill:false,
+          radius: 0,
         },
       ],
     }, {

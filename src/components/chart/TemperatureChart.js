@@ -43,7 +43,7 @@ export default {
         xAxes:[{
           type:'time',
           time:{
-            unit:'day'
+            unit:'hour'
           },
           ticks:{
             fontSize:14

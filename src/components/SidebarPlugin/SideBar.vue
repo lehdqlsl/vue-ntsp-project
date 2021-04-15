@@ -5,12 +5,14 @@
        :data-image="backgroundImage">
     <div class="sidebar-wrapper">
       <div class="logo">
+        <router-link to="/admin/overview">
         <a href="#" class="simple-text logo__container">
             <div class="logo-img">
                 <img src="img/vue-logo.png" alt="">
             </div>
-          {{title}}
+            {{title}}
         </a>
+        </router-link>
       </div>
 
       <slot name="content"></slot>

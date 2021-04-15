@@ -1,6 +1,20 @@
 import moment from "moment";
 import define from "./define"
 
+const eventTagColor = (eventType) => {
+  if (eventType == 11 || eventType == 15 || eventType == 2 || eventType == 26) {
+    return 'danger'
+  } else if (eventType == 7 || eventType == 5 || eventType == 0) {
+    return 'warning'
+  } else if (eventType == 100 || eventType == 27  || eventType == 17  || eventType == 20 || eventType == 4) {
+    return 'success'
+  } else if (eventType == 8 || eventType == 1 || eventType == 12 || eventType == 16 || eventType == 18 || eventType == 3){
+    return 'primary'
+  }else {
+    return 'info'
+  }
+}
+
 const tranEventType = (eventType) => {
   let event
 
@@ -52,6 +66,33 @@ const tranEventType = (eventType) => {
       break
     case 18:
       event = "재실"
+      break
+    case 19:
+      event = "본체 차단"
+      break
+    case 20:
+      event = "센서 배터리 부족"
+      break
+    case 21:
+      event = "음성인식"
+      break
+    case 22:
+      event = "테스트모드 시작"
+      break
+    case 23:
+      event = "테스트모드 종료"
+      break
+    case 24:
+      event = "화재 취소"
+      break
+    case 25:
+      event = "코디 연결"
+      break
+    case 26:
+      event = "레이더 미수신"
+      break
+    case 27:
+      event = "레이더 수신"
       break
     case 100:
       event = "개통"
@@ -169,7 +210,7 @@ const batteryStatus = (battery) =>{
 
   switch (battery) {
     case 2:
-      bat = "정상"
+      bat = "충만"
       break;
     case 1:
       bat = "부족"
@@ -190,6 +231,7 @@ export  default {
   failureType,
   FormatNumber,
   elapsedTime,
+  eventTagColor,
   define
 }
 

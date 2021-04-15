@@ -7,7 +7,7 @@
         <img class="avatar border-gray" @click="openDialog = true" style="cursor:pointer;" :src="recipientInfo.image" alt="..."/>
 
         <h4 v-if="!editable" class="title" style="font-weight: bold;margin-top: 0px;">{{ recipientInfo.name }}<br/></h4>
-        <el-input class="col-sm-4" v-if="editable" placeholder="이름" v-model="recipientInfo.name"></el-input><br>
+        <el-input class="col-sm-4" v-if="editable" placeholder="이름" :maxlength="6" v-model="recipientInfo.name"></el-input><br>
     </div>
     <div class="" style="padding-left: 5px;padding-right: 5px;">
       <div class="row" v-if="!editable">

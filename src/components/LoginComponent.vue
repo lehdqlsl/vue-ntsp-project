@@ -94,8 +94,8 @@
         }
 
         axios.post(common.define.DEST + '/login', param).then((response) => {
+          console.log(common.define.DEST + '/login', param);
           this.$store.commit("auth/SET_TOKEN", response.data.token)
-
           axios.defaults.headers.common['token'] = response.data.token;
           this.$cookies.set("token", response.data.token);
           let json = JSON.parse(response.data.user)
@@ -108,6 +108,7 @@
 
           this.$router.push('/admin/overview')
         }, (error) => {
+          console.log(error)
           this.loading = false
           this.$message.error("계정이 올바르지 않습니다.");
         });
