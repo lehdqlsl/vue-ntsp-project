@@ -419,7 +419,7 @@
         this.radio = "latest"
         this.disabled = true
       },
-      radioChange(value) {d
+      radioChange(value) {
         if (value == "latest") {
           this.disabled = true
           this.inputVersion = "latest"

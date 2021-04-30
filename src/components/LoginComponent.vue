@@ -94,15 +94,13 @@
         }
 
         axios.post(common.define.DEST + '/login', param).then((response) => {
-          console.log(common.define.DEST + '/login', param);
-          this.$store.commit("auth/SET_TOKEN", response.data.token)
-          axios.defaults.headers.common['token'] = response.data.token;
-          this.$cookies.set("token", response.data.token);
+          this.$store.commit("auth/SET_TOKEN", response.data.accessToken)
+          //axios.defaults.headers.common['token'] = response.data.accessToken;
           let json = JSON.parse(response.data.user)
 
           this.$session.start()
           this.$session.set('id', json.userId)
-          this.$session.set('token', response.data.token)
+          this.$session.set('token', response.data.accessToken)
           this.$session.set('name', json.userName)
           this.$session.set('role', json.role)
 

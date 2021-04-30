@@ -79,7 +79,7 @@ axios.interceptors.response.use(function (response) {
   return response
 }, function (error){
   if(error.response.status == 401 && error.response.message != 'AUTH_002'){
-    return Promise.reject(error);
+    router.push('/login')
   }
   return error
 });
@@ -87,7 +87,6 @@ axios.interceptors.response.use(function (response) {
 router.beforeEach((to, from, next) => {
   let token = Vue.$cookies.get('token');
   let to2 = session.get('token');
-
   if(to2 === undefined && to.path != '/login'){
     next('login')
   }else {

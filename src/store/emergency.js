@@ -5,6 +5,7 @@ import common from './common'
 //to handle state
 const state = {
   count: [],
+  lastCount: [],
   emerList: [],
   noActList: [],
   statistics: [],
@@ -23,6 +24,11 @@ const actions = {
   getEmerCount({ commit }) {
     axios.get(common.define.DEST+'/emergency/count').then((Response)=>{
       commit('SET_COUNT', Response.data)
+    })
+  },
+  getLastEmerCount({ commit }) {
+    axios.get(common.define.DEST+'/emergency/count/last').then((Response)=>{
+      commit('SET_COUNT_LAST', Response.data)
     })
   },
   getEmerList({ commit }) {
@@ -71,8 +77,11 @@ const mutations = {
     }
     state.isFetching = true
   },
+  SET_COUNT_LAST(state, count){
+    state.lastCount = count
+  },
   SET_COUNT(state, count){
-    state.count = count;
+    state.count = count
   },
   SET_LIST(state, list){
     state.emerList = []

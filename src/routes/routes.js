@@ -105,6 +105,7 @@ const routes = [
       {
         path: 'history-list',
         name: 'HistoryList',
+        props: true,
         component: () => import('src/pages/HistoryList')
       },
       {

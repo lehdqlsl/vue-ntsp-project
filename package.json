@@ -6,12 +6,14 @@
   "author": "cristijora <joracristi@gmail.com>",
   "scripts": {
     "sn": "vue-cli-service serve --mode sn",
+    "kt": "vue-cli-service serve --mode kt",
     "dev": "vue-cli-service serve --mode dev",
     "local": "vue-cli-service serve --mode local",
     "serve": "vue-cli-service serve --open",
     "build": "vue-cli-service build",
     "build-sn": "vue-cli-service build --mode sn",
     "build-dev": "vue-cli-service build --mode dev",
+    "build-kt": "vue-cli-service build --mode kt",
     "e2e": "node test/e2e/runner.js",
     "lint": "vue-cli-service lint",
     "lint-fix": "vue-cli-service lint --fix"

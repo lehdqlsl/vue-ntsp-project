@@ -130,20 +130,17 @@
           'deleteNotice'
         ]),
       sendNotice(){
-        let param = {
-          type: this.type,
-          title: this.title,
-          content: this.content
-        }
-        this.openDialog = false;
+        const formData = new FormData();
+        formData.append('type', this.type);
+        formData.append('title', this.title);
+        formData.append('content', this.content);
 
-        this.postNotice(param)
+        this.openDialog = false;
+        this.postNotice(formData)
 
         this.type = "0"
         this.title = ""
         this.content = ""
-
-        location.reload()
       },
       handleEdit(index, row){
         let param = {

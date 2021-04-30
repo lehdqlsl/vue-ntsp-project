@@ -3,7 +3,7 @@
     <div class="container-fluid">
       <div class="row">
         <div class="col-12">
-          <h5 style="font-weight: bold">응급내역</h5>
+          <h5 style="font-weight: bold">금월 응급내역 현황</h5>
         </div>
       </div>
       <div class="row">
@@ -23,15 +23,22 @@
                                    style="font-size: 40px;color: #FF5C5B;"></i></a>
                   </div>
 
-                  <h2 class="mt-0 mb-0 emer-title">{{ count.fire }}</h2>
+                  <h2 @click="EmergencyList(11)" class="mt-0 mb-0 emer-title" style="cursor: pointer;">{{ count.fire }}</h2>
                 </div>
                 <div slot="footer" class="pl-2">
-                  <div style="color: #10c469;">
+                  <div style="color: #10c469;" v-if="lastCount.fire > count.fire">
                     <b-icon-arrow-down font-scale="1.5"></b-icon-arrow-down>
-                    <span style="font-size: 1rem;">3.16%</span>
+                    <span  style="font-size: 1rem;">{{ (100 - (count.fire/lastCount.fire*100)).toFixed(2) }}%</span>
+                  </div>
+                  <div style="color: #ff5c5b;" v-if="lastCount.fire < count.fire">
+                    <b-icon-arrow-up font-scale="1.5"></b-icon-arrow-up>
+                    <span style="font-size: 1rem;">{{ ((count.fire/lastCount.fire*100) - 100).toFixed(2) }}%</span>
+                  </div>
+                  <div style="color: #10c469;" v-if="lastCount.fire == count.fire">
+                    <span style="font-size: 1rem;">0.00%</span>
                   </div>
                   <div class="stats ml-4">
-                    Since last month
+                    지난 달 ({{ lastCount.fire }}건)
                   </div>
                 </div>
               </card>
@@ -50,15 +57,19 @@
                     <a class=""><i class="fa fa-phone-square" aria-hidden="true"
                                    style="font-size: 40px;color: rgba(250,52,52,0.82);"></i></a>
                   </div>
-                  <h2 class="mt-0 mb-0 emer-title pl-3">{{ count.emergency }}</h2>
+                  <h2 @click="EmergencyList(15)" class="mt-0 mb-0 emer-title pl-3" style="cursor: pointer;">{{ count.emergency }}</h2>
                 </div>
                 <div slot="footer" class="pl-2">
-                  <div style="color: #10c469;">
+                  <div style="color: #10c469;" v-if="lastCount.emergency > count.emergency">
                     <b-icon-arrow-down font-scale="1.5"></b-icon-arrow-down>
-                    <span style="font-size: 1rem;">40.16%</span>
+                    <span  style="font-size: 1rem;">{{ (100 - (count.emergency/lastCount.emergency*100)).toFixed(2) }}%</span>
+                  </div>
+                  <div style="color: #ff5c5b;" v-if="lastCount.emergency < count.emergency">
+                    <b-icon-arrow-up font-scale="1.5"></b-icon-arrow-up>
+                    <span style="font-size: 1rem;">{{ ((count.emergency/lastCount.emergency*100) - 100).toFixed(2) }}%</span>
                   </div>
                   <div class="stats ml-4">
-                    Since last month
+                    지난 달 ({{ lastCount.emergency }}건)
                   </div>
                 </div>
               </card>
@@ -77,15 +88,19 @@
                   <div class="p-4" style="position: absolute;right: 15px;top:10px;">
                     <a class=""><i class="nc-icon nc-ambulance" style="font-size: 50px;color: #FF5C5B;"></i></a>
                   </div>
-                  <h2 class="mt-0 mb-0 emer-title">{{ count._119 }}</h2>
+                  <h2 @click="EmergencyList(2)" class="mt-0 mb-0 emer-title" style="cursor: pointer;">{{ count._119 }}</h2>
                 </div>
                 <div slot="footer" class="pl-2">
-                  <div style="color: #ff5c5b;">
+                  <div style="color: #10c469;" v-if="lastCount._119 > count._119">
+                    <b-icon-arrow-down font-scale="1.5"></b-icon-arrow-down>
+                    <span  style="font-size: 1rem;">{{ (100 - (count._119/lastCount._119*100)).toFixed(2) }}%</span>
+                  </div>
+                  <div style="color: #ff5c5b;" v-if="lastCount._119 < count._119">
                     <b-icon-arrow-up font-scale="1.5"></b-icon-arrow-up>
-                    <span style="font-size: 1rem;">6.16%</span>
+                    <span style="font-size: 1rem;">{{ ((count._119/lastCount._119*100) - 100).toFixed(2) }}%</span>
                   </div>
                   <div class="stats ml-4">
-                    Since last month
+                    지난 달 ({{ lastCount._119 }}건)
                   </div>
                 </div>
               </card>
@@ -104,15 +119,19 @@
                     <a class=""><i class="fa fa-heartbeat" aria-hidden="true"
                                    style="font-size: 40px;color: #ffdb09;"></i></a>
                   </div>
-                  <h2 class="mt-0 mb-0 emer-title">{{ count.no_activity }}</h2>
+                  <h2 @click="EmergencyList(7)" class="mt-0 mb-0 emer-title" style="cursor: pointer;">{{ count.no_activity }}</h2>
                 </div>
                 <div slot="footer" class="pl-2">
-                  <div style="color: #FF5C5B;">
+                  <div style="color: #10c469;" v-if="lastCount.no_activity > count.no_activity">
+                    <b-icon-arrow-down font-scale="1.5"></b-icon-arrow-down>
+                    <span  style="font-size: 1rem;">{{ (100 - (count.no_activity/lastCount.no_activity*100)).toFixed(2) }}%</span>
+                  </div>
+                  <div style="color: #ff5c5b;" v-if="lastCount.no_activity < count.no_activity">
                     <b-icon-arrow-up font-scale="1.5"></b-icon-arrow-up>
-                    <span style="font-size: 1rem;">6.16%</span>
+                    <span style="font-size: 1rem;">{{ ((count.no_activity/lastCount.no_activity*100) - 100).toFixed(2) }}%</span>
                   </div>
                   <div class="stats ml-4">
-                    Since last day
+                    지난 달 ({{ lastCount.no_activity }}건)
                   </div>
                 </div>
               </card>
@@ -134,7 +153,7 @@
                 body-classes="table-full-width table-responsive"
           >
             <template slot="header">
-              <h5 class="card-title">응급 목록</h5>
+              <h5 class="card-title">미처리 응급 목록</h5>
             </template>
             <e-table class="table-hover table-sm"
                      :data="emerList">
@@ -146,7 +165,7 @@
                 body-classes="table-full-width table-responsive"
           >
             <template slot="header">
-              <h5 class="card-title">활동 미감지 목록</h5>
+              <h5 class="card-title">미처리 활동 미감지 목록</h5>
             </template>
             <div slot="default" class="">
               <e-table class="table-hover table-sm"
@@ -192,6 +211,7 @@
     computed: {
       ...helper.mapState({
         count: state => state.count,
+        lastCount: state => state.lastCount,
         emerList: state => state.emerList,
         noActList: state => state.noActList
       }),
@@ -199,13 +219,25 @@
     methods: {
       ...helper.mapActions([
         'getEmerCount',
-        'getEmerList'
+        'getEmerList',
+        'getLastEmerCount'
       ]),
+      EmergencyList(type) {
+        this.$router.push(
+          {
+            name: 'HistoryList',
+            params: {
+              "propsData": type
+            }
+          }
+        )
+      }
     },
     mounted() {
       this.getEmerCount()
       this.getEmerList()
-      this.date = moment().format("YYYY년 MM월 DD일")
+      this.getLastEmerCount()
+      this.date = moment().format("YYYY년 MM월")
     }
   }
 </script>

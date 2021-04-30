@@ -36,6 +36,24 @@ const state = {
     activity: [],
     breath: [],
     heart: [],
+  },
+  numbersList: {
+    phone: "",
+    _119: "",
+    care1: "",
+    care2: "",
+    center: "",
+    helper: "",
+    etc1: "",
+    etc2: "",
+    etc3: "",
+    etc4: "",
+    etc5: "",
+    etc6: "",
+    etc7: "",
+    etc8: "",
+    etc9: "",
+    etc10: "",
   }
 }
 
@@ -44,13 +62,22 @@ const getters = {}
 
 //to handle actions
 const actions = {
+  getNumbers({commit}, params) {
+    axios.get(common.define.DEST + '/recipients/' + params + '/numbers').then((Response) => {
+      commit('SET_NUMBERS', Response.data)
+    })
+  },
   deleteNotice({commit}, params) {
     axios.delete(common.define.DEST + '/recipient/notices/' + params).then((Response) => {
       location.reload()
     })
   },
   postNotice({commit}, params) {
-    axios.post(common.define.DEST + '/recipient/notices', params).then((Response) => {
+    axios.post(common.define.DEST + '/recipient/notices', params, {
+      headers: {
+        'Content-Type': 'multipart/form-data'
+      }
+    }).then((Response) => {
       location.reload()
     })
   },
@@ -112,9 +139,9 @@ const actions = {
   },
   getRecipientInfo({commit}, params) {
     axios.get(common.define.DEST + '/recipients/' + params).then((Response) => {
-      if(Response.data == ''){
+      if (Response.data == '') {
         alert("존재하지 않는 대상자입니다.")
-      }else{
+      } else {
         commit('GET_RECIPIENT_DATA', Response.data)
       }
     })
@@ -207,6 +234,9 @@ const actions = {
 
 //to handle mutations
 const mutations = {
+  SET_NUMBERS(state, data) {
+    state.numbersList = data
+  },
   SET_RADAR(state, data) {
     state.radar.am = data.radar.am
     state.radar.pm = data.radar.pm

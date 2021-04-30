@@ -217,8 +217,10 @@
     components: {
       RecipientList,
     },
+    props: ['propsData'],
     data() {
       return {
+        test:0,
         options: [
           {
             value: '0',
@@ -309,7 +311,6 @@
         this.$store.commit("recipient/SET_RESET")
       },
       btnSearch(formName) {
-
         let param = {
           startDate: formName.date[0],
           endDate: formName.date[1],
@@ -351,14 +352,22 @@
         ]),
     },
     created() {
-      this.searchForm.date = [
-        moment().subtract(7, 'days').format("YYYY-MM-DD"),
-        moment().format("YYYY-MM-DD")
-      ]
-    }
-    ,
-    mounted() {
 
+    },mounted() {
+      if (this.propsData != undefined) {
+        this.searchForm.resource = '1'
+        this.searchForm.eventValue = this.propsData.toString()
+        this.searchForm.date = [
+          moment().clone().startOf('month').format('YYYY-MM-DD'),
+          moment().clone().endOf('month').format('YYYY-MM-DD')
+        ]
+        this.btnSearch(this.searchForm)
+      }else{
+        this.searchForm.date = [
+          moment().subtract(7, 'days').format("YYYY-MM-DD"),
+          moment().format("YYYY-MM-DD")
+        ]
+      }
     }
     ,
     computed: {

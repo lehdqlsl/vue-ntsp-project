@@ -184,11 +184,11 @@
                 label="LTE 감도">
                 <template slot-scope="scope">
                   <span v-if="scope.row.sensitivity == 0">X</span>
-                  <span v-else-if="scope.row.sensitivity < 60" style="color: #409EFF">매우 좋음 (-{{ scope.row.sensitivity }})</span>
-                  <span v-else-if="scope.row.sensitivity < 75" style="color: #05AE0E">좋음 (-{{ scope.row.sensitivity }})</span>
-                  <span v-else-if="scope.row.sensitivity < 85" style="color: #f0a810">보통 (-{{ scope.row.sensitivity }})</span>
-                  <span v-else-if="scope.row.sensitivity < 95" style="color: #EE2D20">나쁨 (-{{ scope.row.sensitivity }})</span>
-                  <span v-else-if="scope.row.sensitivity < 124" style="color: #bb0502">매우 나쁨 (-{{ scope.row.sensitivity }})</span>
+                  <span v-else-if="scope.row.sensitivity < 91" style="color: #409EFF">매우 좋음 (-{{ scope.row.sensitivity }} dBm)</span>
+                  <span v-else-if="scope.row.sensitivity < 106" style="color: #05AE0E">좋음 (-{{ scope.row.sensitivity }} dBm)</span>
+                  <span v-else-if="scope.row.sensitivity < 111" style="color: #f0a810">보통 (-{{ scope.row.sensitivity }})</span>
+                  <span v-else-if="scope.row.sensitivity < 120" style="color: #EE2D20">나쁨 (-{{ scope.row.sensitivity }} dBm)</span>
+                  <span v-else-if="scope.row.sensitivity < 121" style="color: #bb0502">통신 불가(-{{ scope.row.sensitivity }} dBm)</span>
                 </template>
               </el-table-column>
               <el-table-column
@@ -198,7 +198,6 @@
                 label="마지막 주기보고">
               </el-table-column>
             </data-tables>
-
 
             <data-tables v-if="searchForm.devType==1" :data="sensors" :filters="filters" :page-size="10"
                          :pagination-props="{'pageSizes': [10,20,50]}">
